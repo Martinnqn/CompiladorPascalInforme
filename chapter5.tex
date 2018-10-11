@@ -1,0 +1,137 @@
+\chapter{Generación de código intermedio}
+
+\section{Introducción}
+Luego de realizar todos los chequeos sintácticos y semánticos propuestos, llega la etapa de generar código ejecutable.
+
+En este capítulo desarrollaremos la especificación y la implementación de la generación de código intermedio del lenguaje, utilizando código de tres direcciones, y generando un código ejecutable por una máquina virtual.
+
+\section{Descripción del problema}
+\label{sec:gen_cod:descr_prob}
+En esta etapa necesitamos traducir las sentencias del lenguaje pascal a instrucciones de bajo nivel. Para esto, nuestro lenguaje intermedio será MEPa, cuyas instrucciones son ejecutables por la máquina virtual MEPa. 
+
+El objetivo es ampliar la funcionalidad del analizador semántico, embebiéndole sentencias para la generación de instrucciones MEPa.
+
+El resultado de la compilación debe ser un archivo con el código MEPa que resulte equivalente al código en lenguaje Pascal
+
+\section{Máquina virtual MEPa}
+MEPa es una máquina hipótetica desarrollada teniendo en cuenta las construcciones de Pascal. Nos permite generar código ejecutable sin necesidad de tener en cuenta las particularidades y complejidad de una máquina real.
+
+La memoria de MEPa se divide en tres secciones: la región del programa, donde almacenará el código del programa; un vector de direcciones base (display) que tendrá punteros a direcciones de la tercer región, la pila, donde almacenará los datos que serán utilizados por las operaciones. 
+
+El uso de una pila nos permite implementar fácilmente la evaluación de expresiones, ya que la precedencia de operadores queda implícita por el recorrido del árbol de derivación que surge de nuestra sintaxis. Además, la implementación de las llamadas recursivas también se beneficia al utilizar una estructura de pila para almacenar los valores y las direcciones de retorno.
+
+En la tabla \ref{tab:instr_mepa} se ven las instrucciones que utilizamos y su funcionalidad.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|}
+\hline
+ & Instrucción & Descripción \\ \hline
+\multirow{4}{*}{\begin{tabular}[c]{@{}c@{}}Operaciones \\ aritméticas\end{tabular}} & SUMA & sumar \\ \cline{2-3} 
+ & SUST & restar \\ \cline{2-3} 
+ & MULT & multiplicar \\ \cline{2-3} 
+ & DIVI & dividir \\ \hline
+\multirow{6}{*}{\begin{tabular}[c]{@{}c@{}}Operaciones \\ relacionales\end{tabular}} & CMIG & igual \\ \cline{2-3} 
+ & CMDG & desigual \\ \cline{2-3} 
+ & CMME & menor \\ \cline{2-3} 
+ & CMNI & menor igual \\ \cline{2-3} 
+ & CMMA & mayor \\ \cline{2-3} 
+ & CMYI & mayor igual \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Operaciones\\ unarias\end{tabular}} & NEGA & negación lógica \\ \cline{2-3} 
+ & UMEN & menos unario \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Operaciones \\ lógicas\end{tabular}} & CONJ & and \\ \cline{2-3} 
+ & DISJ & or \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Salto\\ condicional\end{tabular}} & DSVS label & desviar siempre \\ \cline{2-3} 
+ & DSVF label & desviar si el tope es falso \\ \hline
+\multirow{2}{*}{Apilar} & APCT c & apilar constante \\ \cline{2-3} 
+ & APVL m,n & apilar variable \\ \hline
+Almacenar & ALVL m,n & \begin{tabular}[c]{@{}c@{}}almacena el tope de \\ la pila en una variable\end{tabular} \\ \hline
+\multirow{2}{*}{Entrada/Salida} & IMPR & imprimir por pantalla \\ \cline{2-3} 
+ & LEER & leer entrada \\ \hline
+\multirow{7}{*}{\begin{tabular}[c]{@{}c@{}}Programas y \\ procedimientos\end{tabular}} & INPP & inicio del programa \\ \cline{2-3} 
+ & LLPR label & llamada a subrutina \\ \cline{2-3} 
+ & ENPR k & entrada a procedimiento \\ \cline{2-3} 
+ & RTPR k,n & \begin{tabular}[c]{@{}c@{}}retornar desde un \\ procedimiento\end{tabular} \\ \cline{2-3} 
+ & RMEM c & reservar memoria \\ \cline{2-3} 
+ & LMEM c & liberar memoria \\ \cline{2-3} 
+ & PARA & detiene la máquina MEPa \\ \hline
+ & NADA & sin efecto en la ejecución \\ \hline
+\end{tabular}
+    \caption{Instrucciones MEPa}
+    \label{tab:instr_mepa}
+\end{table}
+
+\section{Estrategias}
+
+\section{Limitaciones}
+
+\section{Diseño del generador de código intermedio}
+Para especificar cómo se llevará a cabo la generación de código intermedio, se describirán las modificaciones necesarias sobre las reglas de la gramática.
+
+Para cumplir los objetivos de \ref{sec:gen_cod:descr_prob}, se utilizará una variable a la cual se le agregará el código MEPa que se genere durante la compilación. Una vez concluida la compilación el contenido de la variable se escribirá en un archivo.
+
+\subsection{Modificaciones a la tabla de símbolos}
+La tabla de símbolos será actualizada con nuevos valores necesarios para la generación de código intermedio. Estos valores están asociados a la profundidad y desplazamiento de los identificadores, necesarios para implementar el alcance estático a través del vector de direcciones y la pila de MEPa.
+
+\subsection{Modificaciones a las reglas de la gramática}
+Cada regla que esté asociada a la generación de instrucciones de la tabla \ref{tab:instr_mepa}, será modificada, agregándole a la variable que contiene el código MEPa la instrucción correspondiente.
+
+\begin{itemize}
+\item $<$bool$>$ sintetiza el atributo \texttt{type} indicando el type boolean.
+\item $<$number$>$ sintetiza el atributo \texttt{type} indicando el type integer.
+\item $<$literal$>$ sintetiza el atributo \texttt{type} con el type del literal. Este valor se extrae del atributo sintetizado de $<$bool$>$ o $<$number$>$.
+\item $<$factor$>$ sintetiza el atributo \texttt{type}. También verifica que pueda aplicarse el operador unario correctamente en $<$factor$>$ $\rightarrow$ $<$factor$_1$$>$ utilizando el atributo \texttt{type} de $<$factor$_1$$>$.
+\item $<$identifier$>$ sintetiza el atributo \text{id} con el valor del identificador.
+\item $<$type$>$ sintetiza el atributo \texttt{type} indicando el valor del tipo de dato. 
+\item $<$expression-or$>$, $<$expression-and$>$, $<$expression-rel$>$, $<$expression-add$>$, $<$expression-mult$>$ y $<$factor$>$ sintetizan el atributo \texttt{type} que indica el tipo dato de la expresión.
+\item $<$expression-or$_1>$, $<$expression-and$_1>$, $<$expression-rel$_1>$, $<$expression-add$_1>$, $<$expression-mult$_1>$ verifican que pueda aplicarse su operación correspondiente usando el atributo \texttt{type1} sintetizado y \texttt{type2} heredado . 
+\item $<$identifier-list$>$ sintetiza el atributo \texttt{list\_id} que devuelve una lista de identificadores. Para cargar la lista utiliza el atributo sintetizado \texttt{id} de $<$identifier$>$.
+\item $<$variable-declaration$>$ utiliza los atributos sintetizados \texttt{list\_id} y \texttt{type} para insertar en la tabla de símbolos cada identificador con su tipo.
+\item $<$parameter-declaration$>$ sintetiza un atributo \texttt{list\_parameters} que devuelve una lista con listas de identificadores y sus tipos.
+\item $<$procedure-heading$>$ utiliza el atributo sintetizado \texttt{id} y lo guarda en la tabla de simbolos. También utiliza el atributo sintetizado de $<$parameter-declaration$>$ para guardar los parámetros y sus tipos en la tabla de símbolos
+\item $<$function-heading$>$ utiliza los atributos sintetizados \texttt{id} y \texttt{type} y los guarda en la tabla de símbolos. También utiliza el atributo sintetizado de $<$parameter-declaration$>$ para guardar los parámetros y sus tipos en la tabla de símbolos
+\item $<$assignment-statement$>$ utiliza el atributo heredado \texttt{type} junto con el atributo sintetizado \texttt{type} de $<$expression-or$>$ para verificar si se puede efectuar la asignación.
+\item $<$conditional-statement$>$ y $<$repetitive-statement$>$ utilizan el atributo sintetizado \texttt{type} de $<$expression-or$>$ para verificar que la expresión de la condición sea booleana.
+\end{itemize}
+
+\section{Implementación del aplicativo}
+
+\subsection{Descripción del problema}
+En esta implementación debemos generar el código intermedio según las sentencias del archivo de entrada en lenguaje Pascal. 
+
+En esta etapa no existen errores de generación de código, ya que simplemente es devolver una secuencia de instrucciones, por lo que los únicos errores que lanzará el compilador son los de las etapas previas de análisis del código fuente. Si existe un error en alguna de las etapas de análisis, no se geenerará ningún archivo de salida con código MEPa.
+
+La implementación se basará en agregar las sentencias necesarias para crear el archivo de salida con el código MEPa. Estas sentencias estarán embebidas en el analizador semántico.
+
+\subsection{Herramientas utilizadas}
+Continuamos utilizando el mismo proyecto del analizador semántico, en lenguaje Java con la misma versión y Sistema Operativo Windows 10.
+
+Para verificar el funcionamiento del código MEPa generado, utilizamos el aplicativo que se encuentra en la plataforma PEDCo.
+
+\subsection{Diseño}
+
+\subsection{Instructivos de instalación y uso}
+La instalación y uso es idéntica que para el analizador semántico. Se puede compilar a través del comando \emph{javac *.java} o cargando el proyecto en NetBeans y usando este para compilar.
+
+Para ejecutar, se debe invocar el programa compilado enviándole como parametro el archivo con el código fuente del programa a compilar. 
+
+Como resultado de una compilación exitosa, se debe obtener un archivo de salida con el código MEPa listo para ejecutar en la máquina virtual.
+
+\subsection{Ejemplos}
+
+\subsubsection{Variables locales de un subprograma}
+
+\subsubsection{Pasaje de parámetros para una función}
+El pasaje de parámetros para una función es similar al de un procedimiento, con la diferencias que se reserva un lugar de memoria más en la pila antes de efectuar la llamada, para obtener el resultado de la función. Esta posición de memoria extra puede verse como un parámetro adicional, que no se desapila luego del retorno de la función.
+
+\subsubsection{Sentencia condicional}
+
+\subsubsection{Sentencia repetitiva}
+
+\section{Problemas encontrados}
+
+\section{Posibles mejoras}
+Puede realizarse una optimización de las instrucciones generadas, sobre todo si se encuentra algún flujo del programa que nunca se ejecute, por ejemplo en una sentencia condicional con la forma if (false) \{instrucciones...\}.
+
+\section{Conclusión}
+Pudimos generar el código intermedio MEPa cumpliendo todas las características propuestas. El conjunto de instrucciones resultante no está optimizado, por lo que pueden haber instrucciones innecesarias que reduzcan la eficiencia del programa.

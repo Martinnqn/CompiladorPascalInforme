@@ -1,0 +1,123 @@
+\documentclass[a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage[]{enumerate}
+\usepackage[]{amssymb}
+\usepackage[colorlinks=true,linkcolor=black,citecolor = blue, urlcolor = blue]{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{subfigure}
+\usepackage{pgfplots}
+\usepackage{mathbbol}
+\usepackage{amsmath}
+\usepackage{color}
+%para gramatica bnf
+\usepackage{bnf}
+\pgfplotsset{compat=1.14}
+%para margen
+\usepackage[a4paper,left=2cm,right=2cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{geometry}
+%\usepackage{scrextend}
+%para el automata
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning} %para notacion de automata
+\usetikzlibrary{babel} %compatibilidad con babel
+%para el arbol de directorios
+\usepackage{dirtree}
+%para codigo con color
+\usepackage{minted}
+%para centrar minted (no permite mostrar número de líneas de código)
+%\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{} 
+%para el arbol if_ambiguo hecho en dot.
+\usepackage[pdf]{graphviz}
+\usepackage{psfrag}
+%para declarar nuevos elementos float 
+\usepackage{newfloat}
+%para los pseudocodigos
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\input{renameAlgorithmic}
+
+\usepackage[export]{adjustbox}[2011/08/13]
+
+\usepackage{changepage}
+\usepackage{bm}
+\usepackage{xcolor,colortbl}
+
+\newtheorem{definition}{{\bf\sc Definición }}[section]
+\newtheorem{theorem}{Teorema}[section]
+
+%para las listas "mylist" personalizadas con caption list
+\DeclareFloatingEnvironment[placement={!ht},name=Lista]{mylist}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The following definitions are to extend the LaTeX algorithmic 
+%% package with SWITCH statements and one-line structures.
+%% The extension is by 
+%%   Prof. Farn Wang 
+%%   Dept. of Electrical Engineering, 
+%%   National Taiwan University. 
+%% 
+\newcommand{\SWITCH}[1]{\STATE \textbf{switch} (#1)}
+\newcommand{\ENDSWITCH}{\STATE \textbf{end switch}}
+\newcommand{\CASE}[1]{\STATE \textbf{case} #1\textbf{:} \begin{ALC@g}}
+\newcommand{\ENDCASE}{\end{ALC@g}}
+\newcommand{\CASELINE}[1]{\STATE \textbf{case} #1\textbf{:} }
+\newcommand{\DEFAULT}{\STATE \textbf{default:} \begin{ALC@g}}
+\newcommand{\ENDDEFAULT}{\end{ALC@g}}
+\newcommand{\DEFAULTLINE}[1]{\STATE \textbf{default:} }
+%% 
+%% End of the LaTeX algorithmic package extension.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\title{Desarrollo de un Compilador para Pascal}
+\author{Bermudez Martín \and Marinelli Giuliano}
+\date{Universidad Nacional del Comahue}
+
+\input{caratula}
+
+\tableofcontents
+\thispagestyle{empty}
+
+%\begin{adjustwidth*}{3cm}{3cm}
+
+\chapter{Introducción}
+
+\section{Compiladores y proceso de desarrollo}
+Los compiladores son programas que permiten la traducción entre especificaciones de lenguajes de programación. Tienen el objetivo principal de traducir lenguajes de alto nivel en otros de mas bajo nivel que sean interpretables por la arquitectura del hardware en que se ejecutarán.
+
+Para poder lograr esta tarea, los compiladores realizan varias etapas, donde, en un principio, se tiene como entrada el código del lenguaje a traducir el cuál pasará por las etapas que pueden verse en la figura \ref{fig:etapas} y finalmente retornará el código en el lenguaje objetivo.
+
+\begin{figure}[H]
+\centering
+\resizebox{10cm}{!} {
+\includegraphics{img/etapas_compilador.png}
+}
+\caption{Etapas del desarrollo de un compilador, indicando los dos procesos principales.}
+\label{fig:etapas}
+\end{figure}
+
+El desarrollo tiene dos procesos principales, el \emph{Análisis} y la \emph{Síntesis}. El análisis es el proceso en que se dará énfasis, ya que consta de las etapas más importantes como el análisis léxico, sintáctico y semántico, teniendo principal hincapié en la sintaxis ya que se realizará una \emph{traducción dirigida por la sintaxis} para este trabajo.
+
+En este sentido, para este informe vamos a mostrar el diseño y la implementación de un compilador para un conjunto reducido de construcciones del lenguaje Pascal, explicando el desarrollo de cada etapa y cómo se relaciona con la etapa siguiente.
+
+%\end{adjustwidth*}
+\setcounter{page}{1}
+
+\input{chapter1}
+
+\input{chapter2}
+
+\input{chapter3}
+
+\input{chapter4}
+
+\input{chapter5}
+
+\end{document}

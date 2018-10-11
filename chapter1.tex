@@ -1,0 +1,147 @@
+\chapter{Gramática del lenguaje}
+
+\section{Introducción}
+El diseño y la implementación de un compilador se compone de diferentes etapas, donde cada una requiere una entrada y produce una salida para la etapa siguiente. En este capítulo nos centraremos en la definición preliminar de una gramática para generar las cadenas de entrada que tendrá nuestro lenguaje. En capítulos posteriores utilizaremos estas definiciones para el desarrollo de las etapas siguientes en proceso de compilación.
+
+\section{Descripción del problema}
+\label{desc_problema}
+Para esta primer etapa, debemos definir cómo va a ser la estructura de las cadenas de entrada del lenguaje. Para esto formalizaremos con una gramática utilizando una notación específica, que veremos en la sección \ref{metalenguaje}. En este sentido, se definirán las siguientes construcciones que serán aceptadas por el compilador:
+\begin{itemize}
+\item Definición de variables y subprogramas.
+\item Tipos de datos simples: se utilizaron datos \textbf{integer} y \textbf{boolean}.
+\item Constantes usadas en las expresiones: \textbf{true} y \textbf{false}.
+\item Subprogramas: se pueden definir procedimientos y funciones, con pasaje de parámetro por valor.
+\item Sentencias:
+
+\begin{itemize}
+\item Asignación.
+\item Repetitiva: \textbf{while}.
+\item Alternativa: \textbf{if then else}.
+\item Sentencias compuestas: \textbf{begin end}.
+\end{itemize}
+
+\item Procedimientos \textbf{read} y \textbf{write} para un solo valor.
+\item Operaciones aritméticas: $+$, $-$, $*$, $/$, con uso de paréntesis. 
+\item Operaciones booleanas: operadores \textbf{AND}, \textbf{OR}, \textbf{NOT}, y operadores de comparación: $<=$, $>=$, $>$, $<$, $=$.
+\end{itemize}
+
+\section{Metalenguaje}
+\label{metalenguaje}
+Para expresar el lenguaje se ha utilizado una gramática con la notación \textbf{BNF} sin extender, de manera que se eviten ambigüedades con respecto a las notaciones propuestas por los diferentes autores.
+
+Hemos utilizado la siguiente convención para la definición de la gramática:
+
+\begin{itemize}
+\item Los símbolos no terminales van encerrados entre $<$ y $>$.
+\item Los símbolos terminales se ven en \textbf{negrita}.
+\item Cada regla de producción diferencia su parte izquierda de su parte derecha con el símbolo $\rightarrow$.
+\item Las opciones alternativas en cada regla se especifican con el símbolo $|$.
+\end{itemize}
+
+\section{Estrategias}
+\label{estrategias}
+Para definir la gramática hemos tenido en cuenta la propia definición dada para Pascal (que puede encontrarse en la web) y se la ha limitado en varios sentidos expresados en la sección \ref{limitaciones}, como también se ha optimizado para el caso de no terminales inútiles o repetidos, siempre buscando generar una gramática válida.
+
+Por otro lado, como se ha decidido implementarla en \textbf{BNF} sin extender [\ref{metalenguaje}], la gramática quedó expresada utilizando recursividad, lo cual en etapas siguientes permitirá una traducción a código mas directa.
+
+Se ha decidido realizar la gramática considerando optimizar el uso de los no terminales, en vez de tener en cuenta una posible expansión a futuro, es decir, que nuestra definición no será fácilmente adaptable al cambio pero tendrá un mejor rendimiento en el momento de implementarse.
+
+\section{Limitaciones}
+\label{limitaciones}
+Como se ha mencionado en la sección \ref{desc_problema}, se realizará un compilador para el lenguaje Pascal limitado en varios aspectos. En un principio solo se tendrán en cuenta variables del tipo \textbf{integer} y \textbf{boolean}. Los procedimientos y funciones no podrán recibir parámetros por referencia, solo por valor. Dentro de las sentencias alternativas solo encontraremos \textbf{if then else} y en repetitivas solo la sentencia \textbf{while}. No se tendrá en cuenta parámetros enviados al programa principal. Y finalmente las sentencias de escritura y lectura se verán limitadas a un solo valor, y para la salida se tendrán en cuenta algunas consideraciones [\ref{sec:cons_salida}].
+
+Con respecto a la especificación, debido a que hemos decidido utilizar {\bf BNF} sin extender, este se ve limitado en expresividad, ya que no utilizamos símbolos para  repetitivas, opcionales, agrupaciones, etc. A pesar de esto, creemos que la especificación es clara dado que el lenguaje trabajado no es de gran magnitud.
+
+\subsection{Consideraciones para la salida}
+\label{sec:cons_salida}
+La instrucción de salida write permite especificar el formato de salida de una variable. El formato depende del tipo de variable que se pase por parámetro. En nuestro caso tenemos solo dos tipos de variables, integer y boolean. Para imprimir estos dos tipos de dato hay que tener en cuenta las siguientes características:
+
+\begin{itemize}
+\item{Integer}\\
+write(number : fieldwidth);\\
+Se reservará un campo de ancho ``fieldwidth'' y ``number'' se justificará a la derecha en este campo, con los lugares restantes a la izquierda llenos de espacios en blanco. Si ``fieldwidth'' no es lo suficientemente grande como para cubrir todos los dígitos de ``number'', se mostrará correctamente en un campo más amplio. ``fieldwidth'' también puede ser una variable o expresión de tipo entero.
+\item{Boolean}\\
+write(flag : fieldwidth);\\
+Esto generará ``verdadero'' o ``falso'' dentro del ancho de campo especificado, si se especifica.
+\end{itemize}
+
+El parámetro ``fieldwidth'' es opcional. Para facilitar la implementación no vamos a tener en cuenta esta característica del lenguaje.
+
+\section{Definición de la gramática}
+\label{sec:definicion_gramatica}
+A continuación se mostrará la definición de la gramática en \textbf{BNF} para el lenguaje enunciado anteriormente. Considerar el símbolo inicial $<$program$>$.
+
+%los terminales van entre "" y se ven en negrita.
+%los no terminales van entre <>.
+%punto y coma es el alternativo |
+%los dos puntos son para la flechita derecha para determinar las partes de una regla.
+
+	\begin{grammar}
+		[(colon){$\rightarrow$}]
+		[(semicolon)$|$]
+		[(comma){}]
+		[(period){\vspace{0.3cm} \\}]
+		[(quote){\begin{bf}}{\end{bf}}]
+		[(nonterminal){$<$}{$>$}]
+		
+		%<expression> : <number> ; <number>, [\{"asd"\}], <relational\_operator>, <number>.
+		%<number> : <digit> ; <digit> , <number>.
+		%<digit> : "0";"1";"2";"3";"4";"5";"6";"7";"8";"9".
+		%<relational\_operator> : $"="$;"$\lessthan \greaterthan$";"$\lessthan$";"$\greaterthan$"; "$\lessthan=$";"$\greaterthan=$";"in".
+		
+		<program> : <program-heading> <block> ".".
+		<program-heading> : "program" <identifier> ";".
+		<block> : <declaration-block> <multiple-statement> ; <multiple-statement>.
+		<declaration-block> : <variable-declaration-block> ; <variable-declaration-block> <procedure-and-function-declaration-list> ; <procedure-and-function-declaration-list>.
+		<variable-declaration-block> : "var" <variable-declaration-list>.
+		<variable-declaration-list> : <variable-declaration> ";" ; <variable-declaration> ";" <variable-declaration-list>.
+		<variable-declaration> : <identifier-list> ":" <type>.
+		<procedure-and-function-declaration-list> : <procedure-declaration> ";" ; <function-declaration> ";" ; <procedure-declaration> ";" <procedure-and-function-declaration-list> ; <function-declaration> ";" <procedure-and-function-declaration-list>.
+		<procedure-declaration> : <procedure-heading> ";" <block>.
+		<procedure-heading> : "procedure" <identifier> ; "procedure" <identifier> "("")" ; "procedure" <identifier> "(" <parameter-declaration-list> ")".
+		<function-declaration> : <function-heading> ";" <block>.
+		<function-heading> : "function" <identifier> ":" <type> ; "function" <identifier> "("")" ":" <type> ; "function" <identifier> "(" <parameter-declaration-list> ")" ":" <type>.
+		<parameter-declaration-list> : <parameter-declaration> ; <parameter-declaration> "," <parameter-declaration-list>.
+		<parameter-declaration> : <identifier-list> ":" <type>.
+        <statement-block> : <statement> ; <multiple-statement>.
+		<multiple-statement> : "begin" <statement-list> "end".
+		<statement-list> : <statement> ; <statement> ";" <statement-list>.
+		<statement> : <simple-statement> ; <structured-statement>.
+		<simple-statement> : <assignment-statement> ; <call-procedure-or-function> ; <call-write-read-procedure>.
+		<structured-statement> : <conditional-statement> ; <repetitive-statement>.
+		<assignment-statement> : <identifier> ":=" <expression>.
+		%la segunda alternativa para call-procedure-or-function es para el caso del write.
+		<call-procedure-or-function> : <identifier> ; <identifier> "("")" ; <identifier> "(" <expression-list> ")".
+        <call-write-read-procedure> : "write" ; "read" ; "write" "("")" ; "read" "("")" ; "write" "(" <expression-list> ")" ; "read" "(" <expression-list> ")". 
+		<conditional-statement> : "if" <expression> "then" <statament-block> ; "if" <expression> "then" <statament-block> "else" <statament-block>.
+		<repetitive-statement> : "while" <expression> "do" <statement-block>.
+		<expression-list> : <expression> ; <expression> "," <expression-list>.
+        <expression> :  <expression> "or" <expression$_{1}$> ; <expression$_{1}$>. 
+		<expression$_{1}$> :  <expression$_{1}$> "and" <expression$_{2}$>; <expression$_{2}$>.
+		<expression$_{2}$> : <expression$_{2}$> <relational-operator> <expression$_{3}$> ; <expression$_{3}$>.
+		<expression$_{3}$> : <expression$_{3}$> <addition-operator> <expression$_{4}$> ;  <expression$_{4}$>.
+		<expression$_{4}$> : <expression$_{4}$> <multiplication-operator> <expression$_{5}$> ;  <expression$_{5}$>.
+		<expression$_{5}$> : <identifier> ; "(" <expression> ")" ; <call-procedure-or-function> ; <unary-operator> <expression$_{5}$> ; <literal>.
+		<relational-operator> : "$=$" ; "$<>$" ; "$<$" ; "$<=$" ; "$>$" ; "$>=$".
+        <unary-operator> : $-$ ; "not".
+		<addition-operator> : "$+$" ; "$-$".
+		<multiplication-operator> : "$*$" ; "$/$".
+		<type> : "integer" ; "boolean".
+		<identifier-list> : <identifier> ; <identifier> "," <identifier-list>.
+		<identifier> : <letter> <identifier$_1$> ; \_ <identifier$_1$> .
+        <identifier$_1$> : <word> <identifier$_1$> ; <number> <identifier$_1$> ; $\lambda$.
+		<literal> : <bool> ; <number>.
+		<number> :  <digit> <number$_1$>.
+		<number$_1$> : <digit> <number$_1$> ; $\lambda$.
+        <word> : <letter> <word$_1$> ; "\_" <word$_1$>.
+		<word$_1$> : "\_" <word$_1$> ; <letter> <word$_1$> ; $\lambda$.
+		<letter> : "A" ; "B" ; "C" ; "D" ; "E" ; "F" ; "G" ; "H" ; "I" ; "J" ; "K" ; "L" ; "M" ; "N" ; "O" ; "P" ; "Q" ; "R" ; "S" ; "T" ; "U" ; "V" ; "W" ; "X" ; "Y" ; "Z" ; "a" ; "b" ; "c" ; "d" ; "e" ; "f" ; "g" ; "h" ; "i" ; "j" ; "k" ; "l" ; "m" ; "n" ; "o" ; "p" ; "q" ; "r" ; "s" ; "t" ; "u" ; "v" ; "w" ; "x" ; "y" ; "z".
+		<digit> : "0" ; "1" ; "2" ; "3" ; "4" ; "5" ; "6" ; "7" ; "8" ; "9".
+		<bool> : "true" ; "false".
+\end{grammar}
+
+\section{Problemas encontrados}
+Como se ha decidido utilizar \textbf{BNF} sin extender, fue necesario reemplazar las notaciones repetitivas, optativas y opcionales, que se tuvieron en cuenta en un principio, por una versión equivalente sin ellas. No se han tenido mayores complicaciones, dada la facilidad y simplicidad que otorga la notación de gramáticas.
+
+\section{Conclusiones}
+Se ha logrado realizar una gramática en notación \textbf{BNF} sin extender, que cumpla con los requisitos del problema [\ref{desc_problema}], denotando las limitaciones [\ref{limitaciones}] que tendrá el lenguaje que se compilará y considerando optimizar la gramática de manera que se obtenga un mayor rendimiento en la implementación futura [\ref{estrategias}].
