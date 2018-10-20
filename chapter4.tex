@@ -2,7 +2,7 @@
 \section{Introducción}
 El objetivo de este capítulo es realizar la especificación semántica del lenguaje y mostrar un pseudocódigo de su implementación.
 
-Para llevar acabo la especificación semántica, trabajaremos sobre el analizador sintáctico de la sección anterior, realizando modificaciones que permitan implementar el analizador semántico utilizando una Definición Dirigida por la Sintaxis.
+Para llevar acabo la especificación semántica, trabajaremos sobre el analizador sintáctico de la sección anterior, realizando modificaciones que permitan implementar el analizador semántico.% utilizando una Definición Dirigida por la Sintaxis .
 
 \section{Descripción del problema}
 \label{sec:sem:descr_probl}
@@ -11,7 +11,7 @@ En esta etapa del desarrollo del compilador necesitamos extender el analizador s
 \item Existencia: los identificadores utilizados en el cuerpo del programa deben estar previamente declarados. El alcance de los identificadores es estático, por lo que un identificador no declarado en un ambiente se buscará en sus ambientes ancestros.
 \item Unicidad: no se permite tener más de un identificador con el mismo nombre declarado en un mismo ambiente.
 \item Correspondencia de parámetros: la llamada a procedimientos o funciones debe coincidir con la signatura del procedimiento o la función invocada.
-\item Compatibilidad y equivalencia de tipos: los operandos de un operador deben ser compatibles para poder ejecutar correctamente la operación. Se hará la coerción necesaria donde sea adecuado.
+\item Compatibilidad y equivalencia de tipos: los operandos de un operador deben ser compatibles para poder ejecutar correctamente la operación. %Se hará la coerción necesaria donde sea adecuado.
 \end{itemize}
 
 \section{Compatibilidad de tipos}
@@ -36,21 +36,42 @@ not                                                     & Boolean         & -   
 \end{table}
 
 \section{Estrategias}
-Se utilizaron estructuras de objetos para la representación de la tabla de símbolos de manera que está fuera fácilmente accedida por el Analizador Semántico. En tal estructura se dispusieron atributos de manera que se pueda identificar el nombre del programa, función o procedimiento que corresponde al ambiente nuevo, como también listas para los tipos de los identificadores reconocidos en su interior, y para los parámetros que recibe, en caso de que corresponda. Esto nos permitió chequear fácilmente el retorno de las funciones y las llamadas recursivas, los cuáles son casos particulares que deben tratarse.
+Se utilizaron estructuras de objetos para la representación de la tabla de símbolos de manera que esta fuera fácilmente accedida por el Analizador Semántico. En tal estructura se dispusieron atributos de manera que se pueda identificar el nombre del programa, función o procedimiento que corresponde al ambiente nuevo, como también listas para los tipos de los identificadores reconocidos en su interior, y para los parámetros que recibe, en caso de que corresponda. Esto nos permitió chequear fácilmente el retorno de las funciones y las llamadas recursivas, los cuáles son casos particulares que deben tratarse.
 
-\section{Limitaciones}
-La estructura desarrollada para la tabla de símbolos presenta limitaciones con respecto a la expansión de los atributos que esta puede almacenar para cada identificador. Esto es debido a que se plantearon como listas de atributos solo aquellas características que se deseaban almacenar para los chequeos que se proponen en la sección \ref{sec:sem:descr_probl}. Por lo tanto si se desean agregar mas atributos, es necesario agregar nuevas listas en la estructura, donde se mapeen los identificadores a su valor de atributo, como también sus métodos de acceso correspondientes.
+%\section{Limitaciones}
+%La estructura desarrollada para la tabla de símbolos presenta limitaciones con respecto a la expansión de los atributos que esta puede almacenar para cada identificador. Esto es debido a que se plantearon como listas de atributos solo aquellas características que se deseaban almacenar para los chequeos que se proponen en la sección \ref{sec:sem:descr_probl}. Por lo tanto si se desean agregar mas atributos, es necesario agregar nuevas listas en la estructura, donde se mapeen los identificadores a su valor de atributo, como también sus métodos de acceso correspondientes. Por ejemplo para almacenar el valor de los tipos de los identificadores en la tabla de símbolos, se utiliza una lista que mapea de identificadores a tipos, y se deben agregar todas las operaciones correspondientes para acceder a esta lista. En este sentido, el acceso a los datos de la tabla de símbolos no es genérico ya que si quiero acceder a otro dato, como los parámetros de un subprograma, debo utilizar otra operación correspondiente para tal acceso.
+
+%esto no es una limitación, es una característica de la implementación de la TS. Desde el punto de vista del semántico la tabla de símbolos es genérica porque le provee las operaciones que necesita el semántico.
 
 \section{Diseño del analizador semántico}
-Para modelar el diseño del analizador semántico, se trabajará sobre algunas reglas de la gramática de la sección \ref{sec:gramatica_mod}, agregando reglas para implementar un control semántico. Estas reglas permiten extender la potencia de las gramáticas libres de contexto, convirtiendo la gramática en una gramática de atributos.
+Para modelar el diseño del analizador semántico, se trabajará sobre algunas reglas de la gramática de la sección \ref{sec:gramatica_mod}, agregando acciones semánticas. Estas acciones permiten extender la potencia de las gramáticas libres de contexto, convirtiendo la gramática en una gramática de atributos.
 
-La información que utilizarán las reglas se ubicará en la tabla de símbolos.
+Toda aquella información que se requiera persistir para las acciones semánticas, y que no pueda ser enviada mediante parámetros entre las llamadas de las reglas de la gramática, será almacenada en la tabla de símbolos para su posterior acceso.
 
 \subsection{Tabla de símbolos}
 La tabla de símbolos (TS) es la estructura que guarda toda la información necesaria para el proceso de análisis semántico. En este trabajo, proponemos una tabla de símbolo para cada ambiente particular.
 Como el alcance de los identificadores es estático, cada identificador pertenecerá a un ambiente \emph{A}, y podrá ser accedido por aquellos ambientes \emph{A'} que estén contenidos en \emph{A}.
 
-El Analizador Semántico mantendrá siempre una referencia a la Tabla de Símbolos del ambiente actual que esté procesando. 
+El Analizador Semántico mantendrá siempre una referencia a la Tabla de Símbolos del ambiente actual que esté procesando.
+
+En la Tabla \ref{tab:tabla_simbolos} se esquematiza la forma que tendrá la tabla de símbolos explicada.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		Ambiente & Nombre & Tipo & \multicolumn{3}{c|}{Listas de valores} \\ \hline
+		\multirow{5}{*}{1} & \multirow{5}{*}{$ambiente_1$} & \multirow{5}{*}{\begin{tabular}[c]{@{}c@{}}{[}program $\lvert$ \\ function $\lvert$ \\ procedure{]}\end{tabular}} & Identificador & Tipo & Parámetros \\ \cline{4-6} 
+		&  &  & $id_{var}$ & \begin{tabular}[c]{@{}c@{}}{[}integer $\lvert$ \\ boolean{]}\end{tabular} & {[} {]} \\ \cline{4-6} 
+		&  &  & $id_{subprogram}$ & void & {[} $param_1$, \dots, $param_n$ {]} \\ \cline{4-6} 
+		&  &  & \multicolumn{3}{c|}{\dots} \\ \cline{4-6} 
+		&  &  & $id_n$ & \dots & \dots \\ \hline
+		\multicolumn{6}{|c|}{\dots} \\ \hline
+		n & $ambiente_n$ & \dots & \dots & \dots & \dots \\ \hline
+	\end{tabular}
+\caption{Esquema de la tabla de símbolos diseñada.}
+\label{tab:tabla_simbolos}
+\end{table}
 
 \subsection{Gramática de atributos}
 \label{sec:sem:gram_atrib}
@@ -186,7 +207,7 @@ private void variable_declaration() {
 }
 \end{minted}
 
-\textbf{Declaración de procedimientos:} cuando se encuentra un procedimiento se crea un nuevo ambiente. El ambiente nuevo recibe la clase de ambiente, el nombre del identificador del amibente, y el ambiente padre. Se recorren las listas de parametros para agregarlos a ambos ambientes, en el hijo se requieren los identificadores, y en el padre los tipos. 
+\textbf{Declaración de procedimientos:} cuando se encuentra un procedimiento se crea un nuevo ambiente. El ambiente nuevo recibe la clase de ambiente, el nombre del identificador del ambiente, y el ambiente padre. Se recorren las listas de parámetros para agregarlos a ambos ambientes, en el hijo se requieren los identificadores, y en el padre los tipos. 
 
 \begin{minted}[autogobble,linenos,xleftmargin=0.025\textwidth,xrightmargin=0.025\textwidth,breaklines]{java}
 private void procedure_heading() {
@@ -245,6 +266,9 @@ private String expression_or_1(String type) {
 	return type;
 }
 \end{minted}
+
+Para ver el flujo de datos que ocurren durante el análisis, se muestran a continuación árboles de derivación anotados, donde se aprecia el uso de los ambientes y los atributos de la gramática  embebidos en el análisis sintáctico.
+[ARBOLES ACA]
 
 \subsection{Instructivos de instalación y uso}
 Para usar el programa es idéntico que para el Análizador Sintáctico, al ser un programa portable, solo se requiere la compilación a través del comando \emph{javac *.java} o cargando el proyecto en el NetBeans y usando este para compilar.

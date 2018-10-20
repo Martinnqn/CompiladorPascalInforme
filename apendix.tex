@@ -1,0 +1,804 @@
+\chapter*{Apéndice}
+\appendix
+%\markboth{Appendices}{}
+\addcontentsline{toc}{chapter}{Apéndice}
+\renewcommand{\thesection}{A.\arabic{section}}
+
+\section{Pseudocódigo Analizador Sintáctico}
+\label{apx:pseudocodigo_sintactico}
+
+\begin{multicols}{2}
+\raggedcolumns
+\interlinepenalty=10000
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void match(terminal) {
+	if (preanalisis == terminal) {
+		preanalisis = tokenSiguiente();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void program() {
+	if (preanalisis == TK_PROGRAM) {
+		program_heading();
+		block();
+		match(TK_POINT);
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void program_heading() {
+	if (preanalisis == TK_PROGRAM) {
+		match(TK_PROGRAM);
+		identifier();
+		match(TK_ENDSTNC);
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void block() {
+	switch (preanalisis) {
+		case TK_VAR:
+		case TK_PROCEDURE:
+		case TK_FUNCTION:
+			declaration_block();
+			multiple_statement();
+			break;
+		case TK_BEGIN:
+			multiple_statement();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void declaration_block() {
+	switch (preanalisis) {
+		case TK_VAR:
+			variable_declaration_block();
+			declaration_block_1();
+			break;
+		case TK_PROCEDURE:
+		case TK_FUNCTION:
+			declaration_block_1();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void declaration_block_1() {
+	switch (preanalisis) {
+		case TK_PROCEDURE:
+		case TK_FUNCTION:
+			procedure_and_function_declaration_list();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void variable_declaration_block() {
+	if (preanalisis == TK_VAR)) {
+		match(TK_VAR);
+		variable_declaration_list();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void variable_declaration_list() {
+	if (preanalisis == TK_ID)) {
+		variable_declaration();
+		match(TK_ENDSTNC);
+		variable_declaration_list_1();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void variable_declaration_list_1() {
+	if (preanalisis == TK_ID)) {
+		variable_declaration_list();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void variable_declaration() {
+	if (preanalisis == TK_ID)) {
+		identifier_list();
+		match(TK_TPOINTS);
+		type();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void procedure_and_function_declaration_list() {
+	switch (preanalisis) {
+		case TK_PROCEDURE:
+			procedure_declaration();
+			match(TK_ENDSTNC);
+			procedure_and_function_declaration_list_1();
+			break;
+		case TK_FUNCTION:
+			function_declaration();
+			match(TK_ENDSTNC);
+			procedure_and_function_declaration_list_1();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void procedure_and_function_declaration_list_1() {
+	switch (preanalisis) {
+		case TK_PROCEDURE:
+		case TK_FUNCTION:
+			procedure_and_function_declaration_list();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void procedure_declaration() {
+	if (preanalisis == TK_PROCEDURE)) {
+		procedure_heading();
+		match(TK_ENDSTNC);
+		block();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void procedure_heading() {
+	if (preanalisis == TK_PROCEDURE)) {
+		match(TK_PROCEDURE);
+		identifier();
+		parameters();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void function_declaration() {
+	if (preanalisis == TK_FUNCTION)) {
+		function_heading();
+		match(TK_ENDSTNC);
+		block();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void function_heading() {
+	if (preanalisis == TK_FUNCTION)) {
+		match(TK_FUNCTION);
+		identifier();
+		parameters();
+		match(TK_TPOINTS);
+		type();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void parameters() {
+	if (preanalisis == TK_OPAR)) {
+		match(TK_OPAR);
+		parameters_2();
+		match(TK_CPAR);
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void parameters_2() {
+	if (preanalisis == TK_ID)) {
+		parameter_declaration_list();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void parameter_declaration_list() {
+	if (preanalisis == TK_ID)) {
+		parameter_declaration();
+		parameter_declaration_list_1();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void parameter_declaration_list_1() {
+	if (preanalisis == TK_COMMA)) {
+		match(TK_COMMA);
+		parameter_declaration_list();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void parameter_declaration() {
+	if (preanalisis == TK_ID)) {
+		identifier_list();
+		match(TK_TPOINTS);
+		type();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void statement_block() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_WRITE:
+		case TK_READ:
+		case TK_IF:
+		case TK_WHILE:
+			statement();
+			break;
+		case TK_BEGIN:
+			multiple_statement();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void multiple_statement() {
+	if (preanalisis == TK_BEGIN)) {
+		match(TK_BEGIN);
+		statement_list();
+		match(TK_END);
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void statement_list() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_WRITE:
+		case TK_READ:
+		case TK_IF:
+		case TK_WHILE:
+			statement();
+			statement_list_1();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void statement_list_1() {
+	if (preanalisis == TK_ENDSTNC)) {
+		match(TK_ENDSTNC);
+		statement_list();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void statement() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_WRITE:
+		case TK_READ:
+			simple_statement();
+			break;
+		case TK_IF:
+		case TK_WHILE:
+			structured_statement();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void simple_statement() {
+	switch (preanalisis) {
+		case TK_ID:
+			identifier();
+			simple_statement_1();
+			break;
+		case TK_WRITE:
+			match(TK_WRITE);
+			call_procedure_or_function();
+			break;
+		case TK_READ:
+			match(TK_READ);
+			call_procedure_or_function();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void simple_statement_1() {
+	switch (preanalisis) {
+		case TK_ASSIGN:
+			assignment_statement();
+			break;
+		case TK_OPAR:
+			call_procedure_or_function();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void structured_statement() {
+	switch (preanalisis) {
+		case TK_IF:
+			conditional_statement();
+			break;
+		case TK_WHILE:
+			repetitive_statement();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void assignment_statement() {
+	if (preanalisis == TK_ASSIGN)) {
+		match(TK_ASSIGN);
+		expression_or();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void call_procedure_or_function() {
+	if (preanalisis == TK_OPAR)) {
+		match(TK_OPAR);
+		call_procedure_or_function_1();
+		match(TK_CPAR);
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void call_procedure_or_function_1() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_OPAR:
+		case TK_ADD_OP_REST:
+		case TK_NOT_OP:
+		case TK_BOOLEAN_TRUE:
+		case TK_BOOLEAN_FALSE:
+		case TK_NUMBER:
+			expression_list();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void conditional_statement() {
+	if (preanalisis == TK_IF)) {
+		match(TK_IF);
+		expression_or();
+		match(TK_THEN);
+		statement_block();
+		else_statement();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void else_statement() {
+	if (preanalisis == TK_ELSE)) {
+		match(TK_ELSE);
+		statement_block();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void repetitive_statement() {
+	if (preanalisis == TK_WHILE)) {
+		match(TK_WHILE);
+		expression_or();
+		match(TK_DO);
+		statement_block();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_list() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_OPAR:
+		case TK_ADD_OP_REST:
+		case TK_NOT_OP:
+		case TK_BOOLEAN_TRUE:
+		case TK_BOOLEAN_FALSE:
+		case TK_NUMBER:
+			expression_or();
+			expression_list_1();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_list_1() {
+	if (preanalisis == TK_COMMA)) {
+		match(TK_COMMA);
+		expression_list();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_or() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_OPAR:
+		case TK_ADD_OP_REST:
+		case TK_NOT_OP:
+		case TK_BOOLEAN_TRUE:
+		case TK_BOOLEAN_FALSE:
+		case TK_NUMBER:
+			expression_and();
+			expression_or_1();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_or_1() {
+	if (preanalisis == TK_OR)) {
+		match(TK_OR);
+		expression_and();
+		expression_or_1();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_and() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_OPAR:
+		case TK_ADD_OP_REST:
+		case TK_NOT_OP:
+		case TK_BOOLEAN_TRUE:
+		case TK_BOOLEAN_FALSE:
+		case TK_NUMBER:
+			expression_rel();
+			expression_and_1();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_and_1() {
+	if (preanalisis == TK_AND)) {
+		match(TK_AND);
+		expression_rel();
+		expression_and_1();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_rel() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_OPAR:
+		case TK_ADD_OP_REST:
+		case TK_NOT_OP:
+		case TK_BOOLEAN_TRUE:
+		case TK_BOOLEAN_FALSE:
+		case TK_NUMBER:
+			expression_add();
+			expression_rel_1();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_rel_1() {
+	switch (preanalisis) {
+		case TK_REL_OP_EQ:
+		case TK_REL_OP_NEQ:
+		case TK_REL_OP_MIN:
+		case TK_REL_OP_MAY:
+		case TK_REL_OP_LEQ:
+		case TK_REL_OP_GEQ:
+			relational_operator();
+			expression_add();
+			expression_rel_1();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_add() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_OPAR:
+		case TK_ADD_OP_REST:
+		case TK_NOT_OP:
+		case TK_BOOLEAN_TRUE:
+		case TK_BOOLEAN_FALSE:
+		case TK_NUMBER:
+			expression_mult();
+			expression_add_1();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_add_1() {
+	switch (preanalisis) {
+		case TK_ADD_OP_SUM:
+		case TK_ADD_OP_REST:
+			addition_operator();
+			expression_mult();
+			expression_add_1();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_mult() {
+	switch (preanalisis) {
+		case TK_ID:
+		case TK_OPAR:
+		case TK_ADD_OP_REST:
+		case TK_NOT_OP:
+		case TK_BOOLEAN_TRUE:
+		case TK_BOOLEAN_FALSE:
+		case TK_NUMBER:
+			factor();
+			expression_mult_1();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void expression_mult_1() {
+	switch (preanalisis) {
+		case TK_MULT_OP_POR:
+		case TK_MULT_OP_DIV:
+			multiplication_operator();
+			factor();
+			expression_mult_1();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void factor() {
+	switch (preanalisis) {
+		case TK_ID:
+			identifier();
+			factor_1();
+			break;
+		case TK_OPAR:
+			match(TK_OPAR);
+			expression_or();
+			match(TK_CPAR);
+			break;
+		case TK_ADD_OP_REST:
+		case TK_NOT_OP:
+			unary_operator();
+			factor();
+			break;
+		case TK_BOOLEAN_TRUE:
+		case TK_BOOLEAN_FALSE:
+		case TK_NUMBER:
+			literal();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void factor_1() {
+	if (preanalisis == TK_OPAR)) {
+		call_procedure_or_function();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void relational_operator() {
+	switch (preanalisis) {
+		case TK_REL_OP_EQ:
+			match(TK_REL_OP_EQ);
+			break;
+		case TK_REL_OP_NEQ:
+			match(TK_REL_OP_NEQ);
+			break;
+		case TK_REL_OP_MIN:
+			match(TK_REL_OP_MIN);
+			break;
+		case TK_REL_OP_MAY:
+			match(TK_REL_OP_MAY);
+			break;
+		case TK_REL_OP_LEQ:
+			match(TK_REL_OP_LEQ);
+			break;
+		case TK_REL_OP_GEQ:
+			match(TK_REL_OP_GEQ);
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void unary_operator() {
+	switch (preanalisis) {
+		case TK_ADD_OP_REST:
+			match(TK_ADD_OP_REST);
+			break;
+		case TK_NOT_OP:
+			match(TK_NOT_OP);
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void addition_operator() {
+	switch (preanalisis) {
+		case TK_ADD_OP_SUM:
+			match(TK_ADD_OP_SUM);
+			break;
+		case TK_ADD_OP_REST:
+			match(TK_ADD_OP_REST);
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void multiplication_operator() {
+	switch (preanalisis) {
+		case TK_MULT_OP_POR:
+			match(TK_MULT_OP_POR);
+			break;
+		case TK_MULT_OP_DIV:
+			match(TK_MULT_OP_DIV);
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void type() {
+	switch (preanalisis) {
+		case TK_TYPE_INT:
+			match(TK_TYPE_INT);
+			break;
+		case TK_TYPE_BOOL:
+			match(TK_TYPE_BOOL);
+			break;
+		default:
+			error(un tipo de dato);
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void identifier_list() {
+	if (preanalisis == TK_ID)) {
+		identifier();
+		identifier_list_1();
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void identifier_list_1() {
+	if (preanalisis == TK_COMMA)) {
+		match(TK_COMMA);
+		identifier_list();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void identifier() {
+	if (preanalisis == TK_ID)) {
+		match(TK_ID);
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void literal() {
+	switch (preanalisis) {
+		case TK_BOOLEAN_TRUE:
+		case TK_BOOLEAN_FALSE:
+			bool();
+			break;
+		case TK_NUMBER:
+			number();
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void number() {
+	if (preanalisis == TK_NUMBER)) {
+		match(TK_NUMBER);
+	} else {
+		error();
+	}
+}
+\end{minted}
+\begin{minted}[autogobble,fontsize=\small,xleftmargin=1cm,tabsize=1]{java}
+void bool() {
+	switch (preanalisis) {
+		case TK_BOOLEAN_TRUE:
+			match(TK_BOOLEAN_TRUE);
+			break;
+		case TK_BOOLEAN_FALSE:
+			match(TK_BOOLEAN_FALSE);
+			break;
+		default:
+			error();
+			break;
+	}
+}
+\end{minted}
+\end{multicols}

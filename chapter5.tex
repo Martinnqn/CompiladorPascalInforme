@@ -11,7 +11,7 @@ En esta etapa necesitamos traducir las sentencias del lenguaje pascal a instrucc
 
 El objetivo es ampliar la funcionalidad del analizador semántico, embebiéndole sentencias para la generación de instrucciones MEPa.
 
-El resultado de la compilación debe ser un archivo con el código MEPa que resulte equivalente al código en lenguaje Pascal
+El resultado de la compilación debe ser un archivo con el código MEPa que resulte equivalente al código en lenguaje Pascal y permita la ejecución del mismo.
 
 \section{Máquina virtual MEPa}
 MEPa es una máquina hipótetica desarrollada teniendo en cuenta las construcciones de Pascal. Nos permite generar código ejecutable sin necesidad de tener en cuenta las particularidades y complejidad de una máquina real.
@@ -66,36 +66,60 @@ Almacenar & ALVL m,n & \begin{tabular}[c]{@{}c@{}}almacena el tope de \\ la pila
 \end{table}
 
 \section{Estrategias}
+Para facilitar el trabajo con los saltos condicionales de MEPa, almacenamos los \emph{labels} de cada ambiente en la tabla de símbolos.
+
+Como no tuvimos que preocuparnos por el tamaño de los tipos de datos, para calcular los offsets de las variables utilizamos su posición en el orden de declaración, y se guardó esta posición para cada variable en la tabla de símbolos. Para calcular la memoria a reservar, contamos la cantidad de variables que había en el ambiente.
 
 \section{Limitaciones}
+Algunas operaciones de MEPa no fueron utilizadas, como salidas por pantalla o lecturas de teclado que generen saltos de línea automáticos; aunque sean más una comodidad para el programador que una limitación. 
 
 \section{Diseño del generador de código intermedio}
 Para especificar cómo se llevará a cabo la generación de código intermedio, se describirán las modificaciones necesarias sobre las reglas de la gramática.
 
-Para cumplir los objetivos de \ref{sec:gen_cod:descr_prob}, se utilizará una variable a la cual se le agregará el código MEPa que se genere durante la compilación. Una vez concluida la compilación el contenido de la variable se escribirá en un archivo.
+Para cumplir los objetivos de \ref{sec:gen_cod:descr_prob}, se utilizará una variable a la cuál se le agregará el código MEPa que se genere durante la compilación. Una vez concluida la compilación el contenido de la variable se escribirá en un archivo.
 
 \subsection{Modificaciones a la tabla de símbolos}
+\label{sec:gen_cod:mod_tab_sim}
 La tabla de símbolos será actualizada con nuevos valores necesarios para la generación de código intermedio. Estos valores están asociados a la profundidad y desplazamiento de los identificadores, necesarios para implementar el alcance estático a través del vector de direcciones y la pila de MEPa.
 
 \subsection{Modificaciones a las reglas de la gramática}
 Cada regla que esté asociada a la generación de instrucciones de la tabla \ref{tab:instr_mepa}, será modificada, agregándole a la variable que contiene el código MEPa la instrucción correspondiente.
 
 \begin{itemize}
-\item $<$bool$>$ sintetiza el atributo \texttt{type} indicando el type boolean.
-\item $<$number$>$ sintetiza el atributo \texttt{type} indicando el type integer.
-\item $<$literal$>$ sintetiza el atributo \texttt{type} con el type del literal. Este valor se extrae del atributo sintetizado de $<$bool$>$ o $<$number$>$.
-\item $<$factor$>$ sintetiza el atributo \texttt{type}. También verifica que pueda aplicarse el operador unario correctamente en $<$factor$>$ $\rightarrow$ $<$factor$_1$$>$ utilizando el atributo \texttt{type} de $<$factor$_1$$>$.
-\item $<$identifier$>$ sintetiza el atributo \text{id} con el valor del identificador.
-\item $<$type$>$ sintetiza el atributo \texttt{type} indicando el valor del tipo de dato. 
-\item $<$expression-or$>$, $<$expression-and$>$, $<$expression-rel$>$, $<$expression-add$>$, $<$expression-mult$>$ y $<$factor$>$ sintetizan el atributo \texttt{type} que indica el tipo dato de la expresión.
-\item $<$expression-or$_1>$, $<$expression-and$_1>$, $<$expression-rel$_1>$, $<$expression-add$_1>$, $<$expression-mult$_1>$ verifican que pueda aplicarse su operación correspondiente usando el atributo \texttt{type1} sintetizado y \texttt{type2} heredado . 
-\item $<$identifier-list$>$ sintetiza el atributo \texttt{list\_id} que devuelve una lista de identificadores. Para cargar la lista utiliza el atributo sintetizado \texttt{id} de $<$identifier$>$.
-\item $<$variable-declaration$>$ utiliza los atributos sintetizados \texttt{list\_id} y \texttt{type} para insertar en la tabla de símbolos cada identificador con su tipo.
-\item $<$parameter-declaration$>$ sintetiza un atributo \texttt{list\_parameters} que devuelve una lista con listas de identificadores y sus tipos.
-\item $<$procedure-heading$>$ utiliza el atributo sintetizado \texttt{id} y lo guarda en la tabla de simbolos. También utiliza el atributo sintetizado de $<$parameter-declaration$>$ para guardar los parámetros y sus tipos en la tabla de símbolos
-\item $<$function-heading$>$ utiliza los atributos sintetizados \texttt{id} y \texttt{type} y los guarda en la tabla de símbolos. También utiliza el atributo sintetizado de $<$parameter-declaration$>$ para guardar los parámetros y sus tipos en la tabla de símbolos
-\item $<$assignment-statement$>$ utiliza el atributo heredado \texttt{type} junto con el atributo sintetizado \texttt{type} de $<$expression-or$>$ para verificar si se puede efectuar la asignación.
-\item $<$conditional-statement$>$ y $<$repetitive-statement$>$ utilizan el atributo sintetizado \texttt{type} de $<$expression-or$>$ para verificar que la expresión de la condición sea booleana.
+\item $<$program$>$ agrega \texttt{INPP} antes de llamar a $<$program-heading$>$  y luego de unificar con el ``.'' final agrega \texttt{PARA}. Esto indica el comienzo y fin del programa principal.
+\item En $<$block$>$, luego de llamar $<$declaration-block$>$ y $<$multiple-statement$>$ agrega \texttt{LMEM X}. Esto libera la memoria asignada a las variables, donde \texttt{X} es la cantidad de variables que se reservaron en $<$declaration-block$>$.
+\item $<$declaration-block$>$ agrega \texttt{RMEM X} luego de $<$variable-declaration-block$>$, reservando  \texttt{X} posiciones de memoria para las variables locales.
+\item $<$procedure-declaration$>$ y $<$function-declaration$>$, agrega \texttt{DSVS LX$_{1}$} la cuál es una instrucción de salto, y donde \texttt{X$_{1}$} es un label que corresponde con el final del subprograma. Luego agrega \texttt{LX$_{2}$ ENPR P} que indica el comienzo del subprograma, y donde \texttt{X$_{2}$} es un label que se utilizará para llamar al subprograma posteriormente y \texttt{P} es la profundidad del ambiente actual. Finalmente se agrega \texttt{RTPR P X$_{3}$} y \texttt{LX$_{1}$ NADA}, para indicar el retorno del subprograma, donde \texttt{P} es la misma profundidad mencionada anteriormente, \texttt{X$_{3}$} es la cantidad de parámetros recibidos por el subprograma, y por último \texttt{X$_{1}$} es el label definido para el final del subprograma y donde se desviará la primera vez, durante la definición.
+%crean las etiquetas correspondientes para marcar el comienzo y fin del procedimiento/función, para saltar el cuerpo del procedimiento/función, y para retornar el control a quien lo invocó.
+\item $<$assignment-statement$>$ agrega \texttt{ALVL P O} que permite almacenar el valor del tope de la pila en una variable indicada mediante la profundidad \texttt{P} y el offset \texttt{O}.
+\item  $<$call-procedure-or-function$>$ agrega varias instrucciones diferentes dependiendo del tipo de subprograma llamado:
+\begin{itemize}
+	\item Si es un procedimiento $write$ agrega \texttt{IMPR} que permite imprimir por pantalla el contenido del tope de la pila.
+	\item Si es un procedimiento $read$ agrega \texttt{LEER} que activa la entrada por teclado y luego realiza \texttt{ALVL P O} para almacenar el valor leído en la variable indicada por la profundidad \texttt{P} y el offset \texttt{O}.
+	\item Si es un procedimiento definido por el usuario, agrega \texttt{LLPR LX} que indica la llamada al procedimiento que fue etiquetado con el label \texttt{X}.
+	\item Si es una función definida por el usuario, agrega \texttt{LLPR LX} que indica la llamada a la función que fue etiquetado con el label \texttt{X} y además agrega \texttt{RMEM 1} para reservar una posición de memoria extra para guardar el valor de retorno de la función.
+\end{itemize}
+\item $<$conditional-statement$>$ agrega \texttt{DSVF LX$_{1}$} que permite saltar el código hasta la instrucción etiquetada con \texttt{X$_{1}$} si el tope de la pila es falso, es decir no ejecuta el cuerpo del $then$ en caso de ser falsa la condición de $if$.
+\item $<$else-statement$>$ agrega \texttt{DSVS LX$_{2}$} para desviar el cuerpo del $else$ en caso de que el contenido del $then$ se haya ejecutado. Luego del desvió agrega \texttt{LX$_{1}$ NADA} que será donde se desviará en caso de que el $then$ sea falso, y permitirá la ejecución del $else$, ya que este no será desviado. Finalmente agrega \texttt{LX$_{2}$ NADA} que será donde se desviará el $else$ en caso de no cumplirse. Si no se detecto la sentencia $else$ por el analizador sintáctico solo se agrega \texttt{LX$_{1}$ NADA} que corresponde a donde se desviará el $then$ en caso de ser falso.
+%agrega las instrucciones para desviar el flujo de ejecución y no ejecutar el cuerpo del ``else'' si ya ejecutó el ``then''.
+\item $<$repetitive-statement$>$ agrega \texttt{LX$_{1}$ NADA} que será la instrucción etiquetada donde se desviará el flujo en caso de que la condición de repetición se cumpla. Luego agrega \texttt{DSVF LX$_{2}$} y \texttt{DSVS LX$_{1}$} indicando que se desviará a la instrucción etiquetada \texttt{X$_{2}$} en caso de no cumplirse la condición del $while$ o se desviará a \texttt{X$_{1}$} en caso de cumplirse. Finalmente se agrega \texttt{LX$_{2}$ NADA} que es la instrucción a la que se desviará el flujo en caso de que no se cumpla la condición de repetición.
+%agrega las instrucciones para repetir el cuerpo del ``while'' mientras se cumpla la condición.
+\item $<$expression-or-1$>$ agrega \texttt{DISJ} que indica la disyunción entre los últimos dos valores booleanos almacenados en el tope de la pila.
+\item $<$expression-and-1$>$ agrega \texttt{CONJ} que indica la conjunción entre los últimos dos valores booleanos almacenados en el tope de la pila.
+\item $<$expression-rel-1$>$ agrega varias instrucciones diferentes dependiendo de la operación relacional que se realiza utilizando los últimos dos valores booleanos o enteros almacenados en el tope de la pila:
+\begin{itemize}
+	\item Agrega \texttt{CMIG} para la relación igual.
+	\item Agrega \texttt{CMDG} para la relación desigual.
+	\item Agrega \texttt{CMME} para la relación menor.
+	\item Agrega \texttt{CMMA} para la relación mayor.
+	\item Agrega \texttt{CMNI} para la relación menor igual.
+	\item Agrega \texttt{CMYI} para la relación mayor igual.
+\end{itemize}
+\item $<$expression-add-1$>$ agrega \texttt{SUMA} o \texttt{SUST} para el caso de la operación suma o resta, según corresponda, entre los últimos dos valores enteros almacenados en el tope de la pila.
+\item $<$expression-mult-1$>$ agrega \texttt{MULT} o \texttt{DIVI} para el caso de la operación multiplicación o división, según corresponda, entre los últimos dos valores enteros almacenados en el tope de la pila.
+\item $<$factor$>$ agrega \texttt{UMEN} o \texttt{NEGA} para el caso de la operación unaria negación aritmética o negación relacional, según corresponda, entre los últimos dos valores enteros o booleanos almacenados en el tope de la pila. En caso de que el factor sea un identificador de variable o parámetro agrega \texttt{APVL P O} con la profundidad \texttt{P} y el offset \texttt{O} correspondiente a tal variable o parámetro para almacenar tal valor en el tope de la pila.
+\item $<$number$>$ agrega \texttt{APCT C} que almacena una constante numérica \texttt{C} en el tope de la pila.
+\item $<$bool$>$ agrega \texttt{APCT 1} o \texttt{APCT 0} según sea un valor constante $true$ o $false$ correspondientemente, lo cuál almacena tal valor en el tope de la pila.
 \end{itemize}
 
 \section{Implementación del aplicativo}
@@ -113,29 +137,383 @@ Continuamos utilizando el mismo proyecto del analizador semántico, en lenguaje 
 Para verificar el funcionamiento del código MEPa generado, utilizamos el aplicativo que se encuentra en la plataforma PEDCo.
 
 \subsection{Diseño}
+Como la generación de código es simplemente agregar las instrucciones MEPa a una variable, y luego retornar la variable, trabajaremos sobre los procedimientos implementados en el Analizador Semántico. 
+
+Para no perder la implementación del Analizador Semántico, crearemos otra clase llamada \textbf{GeneradorCodigoIntermedio} dentro del paquete \textbf{codigointermedio} con el mismo código del \textbf{AnalizadorSemántico}, y además crearemos otro TDA \textbf{Ambiente} modificado, por lo que nuestro árbol de directorios quedará como en la figura \ref{fig:arbol_dir_5}.
+
+\begin{figure}[H]
+%no borrar el % de dirtree porque es necesario.
+\dirtree{%
+.1 src.
+.2 compiladorpascal.
+.3 CompiladorPascal.java.
+.3 lexico.
+.3 sintactico.
+.3 semantico.
+.3 codigointermedio.
+.4 GeneradorCodigoIntermedio.java.
+.4 Ambiente.java.
+}
+\caption{Árbol de directorios del proyecto de Java con los archivos del generador de código intermedio.}
+\label{fig:arbol_dir_5}
+\end{figure}
+
+La tabla de símbolos requirió agregar información tanto para poder representar el alcance estático, como para identificar qué identificadores dentro de un ambiente son variables y cuáles son parámetros, para poder calcular el correcto acceso de los valores de la pila. A continuación se puedne ver las modificaciones sobre el TDA Ambiente, donde se aprecia la información necesaria descrita en \ref{sec:gen_cod:mod_tab_sim}.
+
+\begin{minted}[escapeinside=~~,autogobble,linenos,xleftmargin=0.025\textwidth,xrightmargin=0.025\textwidth,breaklines]{java}
+public class Ambiente {
+    
+    ~\dots~
+    
+    //profundidad del ambiente
+    private int profundidad = -1;
+    //ultimo offset utilizado para una variable
+    private int lastOffset = 0;
+    //ultimo offset utilizado para un parametro
+    private int lastParameterOffset = -3;
+    //offset utilizado para el retorno de una funcion
+    private int returnOffset = -4;
+    //label de llamada para un procediemiento o funcion
+    private int label = -1;
+    
+    //Asocia un identificador (variable) a su profundidad
+    private HashMap<String, Integer> profundidades;
+    //Asocia un identificador (variable) a su offset
+    private HashMap<String, Integer> offsets;
+    //Asocia un identificador a su clase (variable, parametro, funcion, procedimiento)
+    private HashMap<String, String> clases;
+    //Asocia un identificador de procedimiento o funcion a su label de llamada
+    private HashMap<String, Integer> labels;
+    
+    ~\dots~
+    
+    //Asocia un identificador a su type y profundidad.
+    public void addVariable(String id, String tipo, int profundidad, boolean isParameter) {
+        tipos.put(id.toUpperCase(), tipo.toUpperCase());
+        profundidades.put(id.toUpperCase(), profundidad);
+        if (isParameter) {
+            offsets.put(id.toUpperCase(), lastParameterOffset++);
+            clases.put(id.toUpperCase(), "parametro");
+        } else {
+            offsets.put(id.toUpperCase(), lastOffset++);
+            clases.put(id.toUpperCase(), "variable");
+        }
+    }
+    ~\dots~
+}
+\end{minted}
+
+Como los parámetros son enviados desde el llamador, la subrutina invocada debe acceder a ellos con un offset negativo (desde el comienzo de su registro de activación accede a posiciones anteriores de la pila), mientras que para acceder a las variables locales, debe acceder con un offset positivo (dentro de su espacio local de la pila). Por esto, al agregar esta información en la tabla de símbolos, necesitamos discriminar la clase del identificador. Esta funcionalidad se agregó al método \emph{addVariable()} utilizando un parámetro más que indica si la variable insertada es un parámetro.
+
+Para mostrar el uso de la nueva información de la tabla de símbolos se expondrán fragmentos de los procedimientos más importantes.
+\begin{minted}[escapeinside=~~,autogobble,linenos,xleftmargin=0.025\textwidth,xrightmargin=0.025\textwidth,breaklines]{java}
+ private String factor() {
+    ~\dots~
+    if (ambiente.getClase(id).equals("variable") || ambiente.getClase(id).equals("parametro")) {
+        mepa += "APVL " + ambiente.getProfundidad(id) + " " + ambiente.getOffset(id) + "\n";
+        } else {
+            if (ambiente.getClase(id).equalsIgnoreCase("funcion")) {
+                call_procedure_or_function(id);
+            } else {
+            errorSemantico("bad_uso_proc", "No se permite uso de procedimientos en expresiones. Causa: retorno void.");
+            }
+      ~\dots~
+}
+\end{minted}
+
+En el procedimiento \emph{factor()} se puede apreciar el uso de la clase de un identificador para verificar si es una variable o un parámetro, y cómo se accede a su profundidad y offset para almacenar su valor en la pila con la instrucción APVL. 
+
+
 
 \subsection{Instructivos de instalación y uso}
-La instalación y uso es idéntica que para el analizador semántico. Se puede compilar a través del comando \emph{javac *.java} o cargando el proyecto en NetBeans y usando este para compilar.
+La instalación y uso es idéntica que para el analizador semántico. Se puede compilar a través del comando \emph{javac *.java} o cargando el proyecto en NetBeans y utilizando este para compilar.
 
-Para ejecutar, se debe invocar el programa compilado enviándole como parametro el archivo con el código fuente del programa a compilar. 
+Para ejecutar, se debe invocar el programa compilado enviándole como parámetro el archivo con el código fuente del programa a compilar. 
 
 Como resultado de una compilación exitosa, se debe obtener un archivo de salida con el código MEPa listo para ejecutar en la máquina virtual.
 
 \subsection{Ejemplos}
 
+\subsubsection{Asignación y expresión simple}
+\begin{figure}[H]
+\begin{minted}[escapeinside=||,autogobble,linenos,xleftmargin=0.35\textwidth,xrightmargin=0.35\textwidth]{pascal}
+Program MepaExpresion;
+Var
+    a, b, c : integer;
+Begin
+    a := a + (b / 9 - 3) * c
+End.
+\end{minted}
+\caption{Programa en Pascal reducido ilustrando una asignación de una expresión simple.}
+\label{fig:ej_expresion}
+\end{figure}
+
+\begin{figure}[H]
+\begin{multicols}{2}
+\begin{minted}[autogobble,linenos,xleftmargin=0.2\textwidth,xrightmargin=0.2\textwidth]{xml}
+INPP
+RMEM 3
+APVL 0 0
+APVL 0 1
+APCT 9
+DIVI
+APCT 3
+SUST
+APVL 0 2
+MULT
+SUMA
+ALVL 0 0
+LMEM 3
+PARA
+\end{minted}
+\end{multicols}
+\caption{Salida de la ejecución del generador de código intermedio con el código de la figura \ref{fig:ej_expresion}.}
+\label{fig:gen_ej_expresion}
+\end{figure}
+
 \subsubsection{Variables locales de un subprograma}
+\begin{figure}[H]
+\begin{minted}[escapeinside=||,autogobble,linenos,xleftmargin=0.35\textwidth,xrightmargin=0.35\textwidth]{pascal}
+Program MepaProcedimiento;
+Var
+    k:integer;
+procedure p (n:integer; g:integer);
+Var 
+    h:integer;
+Begin
+    if n<2 then h:=g+n
+    else begin
+        h:=g;
+        p(n-1,h);
+        k:=h;
+        p(n-2,g)
+    end;
+    write(n)
+End;
+Begin
+    k:=0;
+    p(3,k)
+End.
+\end{minted}
+\caption{Programa en Pascal reducido ilustrando la definición y llamada de un procedimiento.}
+\label{fig:ej_procedimiento}
+\end{figure}
+
+\begin{figure}[H]
+\begin{multicols}{4}
+\begin{minted}[autogobble,linenos,xleftmargin=0.05\textwidth,xrightmargin=0.05\textwidth]{xml}
+INPP
+RMEM 1
+DSVS L1
+L2 ENPR 1
+RMEM 1
+APVL 1 -4
+APCT 2
+CMME
+DSVF L3
+APVL 1 -3
+APVL 1 -4
+SUMA
+ALVL 1 0
+DSVS L4
+L3 NADA
+APVL 1 -3
+ALVL 1 0
+APVL 1 -4
+APCT 1
+SUST
+APVL 1 0
+LLPR L2
+APVL 1 0
+ALVL 0 0
+APVL 1 -4
+APCT 2
+SUST
+APVL 1 -3
+LLPR L2
+L4 NADA
+APVL 1 -4
+IMPR
+LMEM 1
+RTPR 1 2
+L1 NADA
+APCT 0
+ALVL 0 0
+APCT 3
+APVL 0 0
+LLPR L2
+LMEM 1
+PARA
+\end{minted}
+\end{multicols}
+\caption{Salida de la ejecución del generador de código intermedio con el código de la figura \ref{fig:ej_procedimiento}.}
+\label{fig:gen_ej_procediemiento}
+\end{figure}
 
 \subsubsection{Pasaje de parámetros para una función}
 El pasaje de parámetros para una función es similar al de un procedimiento, con la diferencias que se reserva un lugar de memoria más en la pila antes de efectuar la llamada, para obtener el resultado de la función. Esta posición de memoria extra puede verse como un parámetro adicional, que no se desapila luego del retorno de la función.
 
+\begin{figure}[H]
+\begin{minted}[escapeinside=||,autogobble,linenos,xleftmargin=0.35\textwidth,xrightmargin=0.35\textwidth]{pascal}
+Program MepaFuncion;
+Var
+    a: integer;
+function fact(n:integer):integer;
+Begin
+    if n < 2 then fact := 1
+    else fact := fact(n-1)*n
+End;
+Begin
+    a:=3;
+    write (fact(a))
+End.
+\end{minted}
+\caption{Programa en Pascal reducido ilustrando la definición y llamada de una función.}
+\label{fig:ej_funcion}
+\end{figure}
+
+\begin{figure}[H]
+\begin{multicols}{3}
+\begin{minted}[autogobble,linenos,xleftmargin=0.1\textwidth,xrightmargin=0.1\textwidth]{xml}
+INPP
+RMEM 1
+DSVS L1
+L2 ENPR 1
+APVL 1 -3
+APCT 2
+CMME
+DSVF L3
+APCT 1
+ALVL 1 -4
+DSVS L4
+L3 NADA
+RMEM 1
+APVL 1 -3
+APCT 1
+SUST
+LLPR L2
+APVL 1 -3
+MULT
+ALVL 1 -4
+L4 NADA
+RTPR 1 1
+L1 NADA
+APCT 3
+ALVL 0 0
+RMEM 1
+APVL 0 0
+LLPR L2
+IMPR
+LMEM 1
+PARA
+\end{minted}
+\end{multicols}
+\caption{Salida de la ejecución del generador de código intermedio con el código de la figura \ref{fig:ej_funcion}.}
+\label{fig:gen_ej_funcion}
+\end{figure}
+
 \subsubsection{Sentencia condicional}
+\begin{figure}[H]
+\begin{minted}[escapeinside=||,autogobble,linenos,xleftmargin=0.35\textwidth,xrightmargin=0.35\textwidth]{pascal}
+Program MepaCondicional;
+Var
+    a, b : integer;
+    p, q: boolean;
+Begin
+    if a > b then q := p and q
+        else if (a < 2*b) then p := true
+            else q := false
+End.
+\end{minted}
+\caption{Programa en Pascal reducido ilustrando una sentencia condicional.}
+\label{fig:ej_if_then_else}
+\end{figure}
+
+\begin{figure}[H]
+\begin{multicols}{3}
+\begin{minted}[autogobble,linenos,xleftmargin=0.1\textwidth,xrightmargin=0.1\textwidth]{xml}
+INPP
+RMEM 4
+APVL 0 0
+APVL 0 1
+CMMA
+DSVF L1
+APVL 0 2
+APVL 0 3
+CONJ
+ALVL 0 3
+DSVS L2
+L1 NADA
+APVL 0 0
+APCT 2
+APVL 0 1
+MULT
+CMME
+DSVF L3
+APCT 1
+ALVL 0 2
+DSVS L4
+L3 NADA
+APCT 0
+ALVL 0 3
+L4 NADA
+L2 NADA
+LMEM 4
+PARA
+\end{minted}
+\end{multicols}
+\caption{Salida de la ejecución del generador de código intermedio con el código de la figura \ref{fig:ej_if_then_else}.}
+\label{fig:gen_ej_if_then_else}
+\end{figure}
 
 \subsubsection{Sentencia repetitiva}
 
+\begin{figure}[H]
+\begin{minted}[escapeinside=||,autogobble,linenos,xleftmargin=0.35\textwidth,xrightmargin=0.35\textwidth]{pascal}
+Program MepaRepetitiva;
+Var
+    s, n : integer;
+Begin
+    while s <= n do
+        s := s + 3
+End.
+\end{minted}
+\caption{Programa en Pascal reducido ilustrando una sentencia repetitiva.}
+\label{fig:ej_while_do}
+\end{figure}
+
+\begin{figure}[H]
+\begin{multicols}{2}
+\begin{minted}[autogobble,linenos,xleftmargin=0.2\textwidth,xrightmargin=0.2\textwidth]{xml}
+INPP
+RMEM 2
+L1 NADA
+APVL 0 0
+APVL 0 1
+CMNI
+DSVF L2
+APVL 0 0
+APCT 3
+SUMA
+ALVL 0 0
+DSVS L1
+L2 NADA
+LMEM 2
+PARA
+\end{minted}
+\end{multicols}
+\caption{Salida de la ejecución del generador de código intermedio con el código de la figura \ref{fig:ej_while_do}.}
+\label{fig:gen_ej_while_do}
+\end{figure}
+
 \section{Problemas encontrados}
+Durante la generación de funciones, nos encontramos que si una función era llamada y su valor de retorno no era usado, la pila de MEPa quedaba con memoria reservada, lo que generaba problemas cuando se hacían retornos al procedimiento llamador. Por esto, evitamos el uso de funciones cuyo valor de retorno no sea usado.
 
 \section{Posibles mejoras}
 Puede realizarse una optimización de las instrucciones generadas, sobre todo si se encuentra algún flujo del programa que nunca se ejecute, por ejemplo en una sentencia condicional con la forma if (false) \{instrucciones...\}.
 
 \section{Conclusión}
 Pudimos generar el código intermedio MEPa cumpliendo todas las características propuestas. El conjunto de instrucciones resultante no está optimizado, por lo que pueden haber instrucciones innecesarias que reduzcan la eficiencia del programa.
+
+Como consecuencia de trabajar sobre el mismo código que el Analizador Semántico, el programa creció y se dificulta su lectura.
+
