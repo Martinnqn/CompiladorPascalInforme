@@ -268,7 +268,111 @@ private String expression_or_1(String type) {
 \end{minted}
 
 Para ver el flujo de datos que ocurren durante el análisis, se muestran a continuación árboles de derivación anotados, donde se aprecia el uso de los ambientes y los atributos de la gramática  embebidos en el análisis sintáctico.
-[ARBOLES ACA]
+
+Para simplificar el nombre de los nodos, se abrevió el nombre de los no terminales de la gramática, quedando como los de la siguiente lista:
+\begin{itemize}
+    \item VD: Variable\_declaration
+    \item IL: Identifier\_list
+    \item I: Identifier
+    \item IL\_1: Identifier\_list\_1
+    \item VDL: variable\_declaration\_list
+    \item VDL\_1: variable\_declaration\_list\_1
+    \item PD: procedure\_declaration
+    \item PH: procedure\_heading
+    \item P: parameters
+    \item P\_2: parameters\_2
+    \item PDL: parameter\_declaration\_list
+    \item PrD: parameter\_declaration
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.65, node distance = 2.5cm, state/.style={circle, draw, minimum size=1cm}]
+\tikzset{every state/.append style={thick, fill=gray!10}}
+\node[state] (0) at (0,6) {$VD$};
+\node[state] (1) at (-3,4) {$IL$};
+\node[state] (2) at (3,4) {$T$};
+\node[state] (3) at (-1,2) {$IL\_1$};
+\node[state] (4) at (-5,2) {$I$};
+\node[state] (5) at (-1,0) {$IL$};
+\node[state] (6) at (1,-2) {$IL\_1$};
+\node[state] (7) at (-3,-2) {$I$};
+
+\node[right] (8) at (6,4) {{\bf ($addAmbiente(list\_id, type)$)}};
+
+\path[->,>=stealth]
+(0) edge[above] node{$ $} (1)
+    edge[above] node{$ $} (2)
+    edge[bend left=25] node{$ $} (8)
+
+(1) edge[above] node{$ $} (3)
+    edge[above] node{$ $} (4)
+    edge[bend left, left] node{$list\_id=\{'a','b'\}$} (0)
+
+(2) edge[bend right, right] node{$type=integer$} (0)
+
+(3) edge[bend right, right] node{$'b'$} (1)
+    edge[above] node{$ $} (5)
+    
+(4) edge[bend left, left] node{$'a'$} (1)
+
+(5) edge[above] node{$ $} (6)
+    edge[above] node{$ $} (7)
+
+(7) edge[bend left, left] node{$'b'$} (5)
+   % edge[bend left, left] node{$ $} (3)
+;
+\end{tikzpicture}
+\caption{Declaración simple de variables.}
+\label{fig:arbol_declaracio_var}
+\end{figure}
+
+En la figura \ref{fig:arbol_declaracio_var} se ve un árbol de derivación anotado teniendo en cuenta la gramática de atributos  y el uso de la tabla de símbolos, para la definición de dos variables integer: ``VAR a,b:integer;''. Cuando el no terminal VD obtiene el atributo list\_id que tiene la lista de identificadores declarados y type que tiene el tipo de dato de los identificadores, puede insertarlos en el Ambiente actual, que representa la tabla de símbolos de la subrutina que está analizando.
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.65, node distance = 2.5cm, state/.style={circle, draw, minimum size=1cm},
+triangle/.style={fill = light blue,isosceles triangle,draw=,thick,shape border rotate=90,isosceles triangle stretches=true, minimum height=20mm,minimum width=15mm,inner sep=0,yshift={-10mm}},
+large triangle/.style={triangle,minimum width = 27mm,minimum height=36mm,yshift={-11mm}}]
+\tikzset{every state/.append style={thick, fill=gray!10}}
+\node[state] (0) at (0,6) {$VDL$};
+\node[state] (1) at (-3,4) {$VD$};
+\node[state] (2) at (3,4) {$VDL\_1$};
+\node[state] (3) at (-1,2) {$IL\_1$};
+\node[large triangle,yshift={-3mm}] (4) at (-5,2) {$I$};
+\node[state] (5) at (-1,0) {$IL$};
+\node[state] (6) at (1,-2) {$IL\_1$};
+\node[state] (7) at (-3,-2) {$I$};
+
+\node[right] (8) at (6,4) {{\bf ($addAmbiente(list\_id, type)$)}};
+
+\path[->,>=stealth]
+(0) edge[above] node{$ $} (1)
+    edge[above] node{$ $} (2)
+    edge[bend left=25] node{$ $} (8)
+
+(1) edge[above] node{$ $} (3)
+    edge[above] node{$ $} (4)
+    edge[bend left, left] node{$list\_id=\{'a','b'\}$} (0)
+
+(2) edge[bend right, right] node{$type=integer$} (0)
+
+(3) edge[bend right, right] node{$'b'$} (1)
+    edge[above] node{$ $} (5)
+    
+(4) edge[bend left, left] node{$'a'$} (1)
+
+(5) edge[above] node{$ $} (6)
+    edge[above] node{$ $} (7)
+
+(7) edge[bend left, left] node{$'b'$} (5)
+   % edge[bend left, left] node{$ $} (3)
+;
+\end{tikzpicture}
+\caption{Declaración de listas de variables.}
+\label{fig:arbol_declaracio_list_var}
+\end{figure}
 
 \subsection{Instructivos de instalación y uso}
 Para usar el programa es idéntico que para el Análizador Sintáctico, al ser un programa portable, solo se requiere la compilación a través del comando \emph{javac *.java} o cargando el proyecto en el NetBeans y usando este para compilar.
