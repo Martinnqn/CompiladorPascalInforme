@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{Program} \PYG{n}{MepaExpresion}\PYG{o}{;}
+\PYG{k}{Var}
+    \PYG{n}{a}\PYG{o}{,} \PYG{n}{b}\PYG{o}{,} \PYG{n}{c} \PYG{o}{:} \PYG{k+kt}{integer}\PYG{o}{;}
+\PYG{k}{Begin}
+    \PYG{n}{a} \PYG{o}{:}\PYG{o}{=} \PYG{n}{a} \PYG{o}{+} \PYG{p}{(}\PYG{n}{b} \PYG{o}{/} \PYG{l+m+mi}{9} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{3}\PYG{p}{)} \PYG{o}{*} \PYG{n}{c}
+\PYG{k}{End}\PYG{o}{.}
+\end{Verbatim}

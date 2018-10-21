@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{analizar}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{try} \PYG{o}{\PYGZob{}}
+		\PYG{n}{preanalisis} \PYG{o}{=} \PYG{n}{lexico}\PYG{o}{.}\PYG{n+na}{tokenSiguiente}\PYG{o}{();}
+		\PYG{n}{program}\PYG{o}{();}
+	\PYG{o}{\PYGZcb{}} \PYG{k}{catch} \PYG{o}{(}\PYG{n}{RuntimeException} \PYG{n}{ex}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+		\PYG{n}{System}\PYG{o}{.}\PYG{n+na}{out}\PYG{o}{.}\PYG{n+na}{println}\PYG{o}{(}\PYG{n}{ex}\PYG{o}{.}\PYG{n+na}{getCause}\PYG{o}{().}\PYG{n+na}{getMessage}\PYG{o}{());}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

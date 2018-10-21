@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{Program} \PYG{n}{Example3}\PYG{o}{;}
+\PYG{k}{Var}
+    \PYG{n}{Num1}\PYG{o}{,} \PYG{n}{Num2}\PYG{o}{,} \PYG{n}{Sum1} \PYG{o}{:} \PYG{k+kt}{Integer}\PYG{o}{;}
+    \PYG{k}{Procedure} \PYG{n+nf}{proc}\PYG{p}{(}\PYG{n}{a}\PYG{o}{:}\PYG{k+kt}{integer}\PYG{o}{,} \PYG{n}{b}\PYG{o}{:}\PYG{k+kt}{boolean}\PYG{p}{)}\PYG{o}{;}
+    \PYG{k}{begin}
+        \PYG{n}{b} \PYG{o}{:}\PYG{o}{=} \PYG{k}{true}\PYG{o}{;}
+    \PYG{k}{end}\PYG{o}{;}
+\PYG{k}{Begin}
+    \PYG{n}{proc}\PYG{p}{(}\PYG{n}{Num1}\PYG{o}{,}\PYG{k}{true}\PYG{p}{)}\PYG{o}{;}
+    \PYG{esc}{!proc(Num1,Num2)!}
+\PYG{k}{End}\PYG{o}{.}
+\end{Verbatim}

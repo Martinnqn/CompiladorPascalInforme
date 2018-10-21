@@ -1,0 +1,92 @@
+\select@language {spanish}
+\contentsline {chapter}{\numberline {1}Introducci\IeC {\'o}n}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Compiladores y proceso de desarrollo}{1}{section.1.1}
+\contentsline {chapter}{\numberline {2}Gram\IeC {\'a}tica del lenguaje}{2}{chapter.2}
+\contentsline {section}{\numberline {2.1}Introducci\IeC {\'o}n}{2}{section.2.1}
+\contentsline {section}{\numberline {2.2}Descripci\IeC {\'o}n del problema}{2}{section.2.2}
+\contentsline {section}{\numberline {2.3}Metalenguaje}{2}{section.2.3}
+\contentsline {section}{\numberline {2.4}Estrategias}{3}{section.2.4}
+\contentsline {section}{\numberline {2.5}Limitaciones}{3}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Consideraciones para la salida}{3}{subsection.2.5.1}
+\contentsline {section}{\numberline {2.6}Definici\IeC {\'o}n de la gram\IeC {\'a}tica}{3}{section.2.6}
+\contentsline {section}{\numberline {2.7}Problemas encontrados}{5}{section.2.7}
+\contentsline {section}{\numberline {2.8}Conclusiones}{5}{section.2.8}
+\contentsline {chapter}{\numberline {3}Especificaci\IeC {\'o}n l\IeC {\'e}xica}{6}{chapter.3}
+\contentsline {section}{\numberline {3.1}Introducci\IeC {\'o}n}{6}{section.3.1}
+\contentsline {section}{\numberline {3.2}Descripci\IeC {\'o}n del problema}{6}{section.3.2}
+\contentsline {section}{\numberline {3.3}Definici\IeC {\'o}n del alfabeto, lexemas, tokens y patrones}{6}{section.3.3}
+\contentsline {section}{\numberline {3.4}Estrategias}{7}{section.3.4}
+\contentsline {section}{\numberline {3.5}Limitaciones}{8}{section.3.5}
+\contentsline {section}{\numberline {3.6}Dise\IeC {\~n}o del reconocedor}{8}{section.3.6}
+\contentsline {section}{\numberline {3.7}Implementaci\IeC {\'o}n del aplicativo}{9}{section.3.7}
+\contentsline {subsection}{\numberline {3.7.1}Descripci\IeC {\'o}n del problema}{9}{subsection.3.7.1}
+\contentsline {subsection}{\numberline {3.7.2}Herramientas utilizadas}{9}{subsection.3.7.2}
+\contentsline {subsection}{\numberline {3.7.3}Dise\IeC {\~n}o}{9}{subsection.3.7.3}
+\contentsline {subsection}{\numberline {3.7.4}Instructivos de instalaci\IeC {\'o}n y uso}{10}{subsection.3.7.4}
+\contentsline {subsection}{\numberline {3.7.5}Ejemplos}{10}{subsection.3.7.5}
+\contentsline {section}{\numberline {3.8}Conclusiones}{11}{section.3.8}
+\contentsline {chapter}{\numberline {4}Especificaci\IeC {\'o}n sint\IeC {\'a}ctica}{12}{chapter.4}
+\contentsline {section}{\numberline {4.1}Introducci\IeC {\'o}n}{12}{section.4.1}
+\contentsline {section}{\numberline {4.2}Descripci\IeC {\'o}n del problema}{12}{section.4.2}
+\contentsline {section}{\numberline {4.3}Conflictos de la gram\IeC {\'a}tica y el lenguaje}{12}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Factorizaci\IeC {\'o}n a izquierda}{13}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Quitando recursi\IeC {\'o}n a izquierda}{13}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Ambig\IeC {\"u}edad del lenguaje}{14}{subsection.4.3.3}
+\contentsline {section}{\numberline {4.4}Gram\IeC {\'a}tica modificada}{16}{section.4.4}
+\contentsline {section}{\numberline {4.5}Estrategias}{19}{section.4.5}
+\contentsline {section}{\numberline {4.6}Limitaciones}{19}{section.4.6}
+\contentsline {section}{\numberline {4.7}Dise\IeC {\~n}o del analizador sint\IeC {\'a}ctico}{19}{section.4.7}
+\contentsline {section}{\numberline {4.8}Implementaci\IeC {\'o}n del aplicativo}{19}{section.4.8}
+\contentsline {subsection}{\numberline {4.8.1}Descripci\IeC {\'o}n del problema}{19}{subsection.4.8.1}
+\contentsline {subsection}{\numberline {4.8.2}Herramientas utilizadas}{19}{subsection.4.8.2}
+\contentsline {subsection}{\numberline {4.8.3}Dise\IeC {\~n}o}{20}{subsection.4.8.3}
+\contentsline {subsection}{\numberline {4.8.4}Instructivos de instalaci\IeC {\'o}n y uso}{22}{subsection.4.8.4}
+\contentsline {subsection}{\numberline {4.8.5}Ejemplos}{22}{subsection.4.8.5}
+\contentsline {section}{\numberline {4.9}Problemas encontrados}{24}{section.4.9}
+\contentsline {section}{\numberline {4.10}Posibles mejoras}{24}{section.4.10}
+\contentsline {section}{\numberline {4.11}Conclusiones}{24}{section.4.11}
+\contentsline {chapter}{\numberline {5}Especificaci\IeC {\'o}n sem\IeC {\'a}ntica}{25}{chapter.5}
+\contentsline {section}{\numberline {5.1}Introducci\IeC {\'o}n}{25}{section.5.1}
+\contentsline {section}{\numberline {5.2}Descripci\IeC {\'o}n del problema}{25}{section.5.2}
+\contentsline {section}{\numberline {5.3}Compatibilidad de tipos}{25}{section.5.3}
+\contentsline {section}{\numberline {5.4}Estrategias}{26}{section.5.4}
+\contentsline {section}{\numberline {5.5}Dise\IeC {\~n}o del analizador sem\IeC {\'a}ntico}{26}{section.5.5}
+\contentsline {subsection}{\numberline {5.5.1}Tabla de s\IeC {\'\i }mbolos}{26}{subsection.5.5.1}
+\contentsline {subsection}{\numberline {5.5.2}Gram\IeC {\'a}tica de atributos}{26}{subsection.5.5.2}
+\contentsline {section}{\numberline {5.6}Implementaci\IeC {\'o}n del aplicativo}{27}{section.5.6}
+\contentsline {subsection}{\numberline {5.6.1}Descripci\IeC {\'o}n del problema}{27}{subsection.5.6.1}
+\contentsline {subsection}{\numberline {5.6.2}Herramientas utilizadas}{28}{subsection.5.6.2}
+\contentsline {subsection}{\numberline {5.6.3}Dise\IeC {\~n}o}{28}{subsection.5.6.3}
+\contentsline {subsection}{\numberline {5.6.4}Instructivos de instalaci\IeC {\'o}n y uso}{33}{subsection.5.6.4}
+\contentsline {subsection}{\numberline {5.6.5}Ejemplos}{33}{subsection.5.6.5}
+\contentsline {subsubsection}{Chequeo de unicidad}{34}{section*.2}
+\contentsline {subsubsection}{Chequeo de existencia}{34}{section*.3}
+\contentsline {subsubsection}{Correspondencia de par\IeC {\'a}metros}{35}{section*.4}
+\contentsline {subsubsection}{Devolver valor de una funci\IeC {\'o}n}{35}{section*.5}
+\contentsline {subsubsection}{Compatibilidad de tipos}{36}{section*.6}
+\contentsline {section}{\numberline {5.7}Conclusi\IeC {\'o}n}{36}{section.5.7}
+\contentsline {chapter}{\numberline {6}Generaci\IeC {\'o}n de c\IeC {\'o}digo intermedio}{37}{chapter.6}
+\contentsline {section}{\numberline {6.1}Introducci\IeC {\'o}n}{37}{section.6.1}
+\contentsline {section}{\numberline {6.2}Descripci\IeC {\'o}n del problema}{37}{section.6.2}
+\contentsline {section}{\numberline {6.3}M\IeC {\'a}quina virtual MEPa}{37}{section.6.3}
+\contentsline {section}{\numberline {6.4}Estrategias}{37}{section.6.4}
+\contentsline {section}{\numberline {6.5}Limitaciones}{38}{section.6.5}
+\contentsline {section}{\numberline {6.6}Dise\IeC {\~n}o del generador de c\IeC {\'o}digo intermedio}{38}{section.6.6}
+\contentsline {subsection}{\numberline {6.6.1}Modificaciones a la tabla de s\IeC {\'\i }mbolos}{38}{subsection.6.6.1}
+\contentsline {subsection}{\numberline {6.6.2}Modificaciones a las reglas de la gram\IeC {\'a}tica}{38}{subsection.6.6.2}
+\contentsline {section}{\numberline {6.7}Implementaci\IeC {\'o}n del aplicativo}{40}{section.6.7}
+\contentsline {subsection}{\numberline {6.7.1}Descripci\IeC {\'o}n del problema}{40}{subsection.6.7.1}
+\contentsline {subsection}{\numberline {6.7.2}Herramientas utilizadas}{40}{subsection.6.7.2}
+\contentsline {subsection}{\numberline {6.7.3}Dise\IeC {\~n}o}{40}{subsection.6.7.3}
+\contentsline {subsection}{\numberline {6.7.4}Instructivos de instalaci\IeC {\'o}n y uso}{42}{subsection.6.7.4}
+\contentsline {subsection}{\numberline {6.7.5}Ejemplos}{42}{subsection.6.7.5}
+\contentsline {subsubsection}{Asignaci\IeC {\'o}n y expresi\IeC {\'o}n simple}{42}{section*.7}
+\contentsline {subsubsection}{Variables locales de un subprograma}{43}{section*.8}
+\contentsline {subsubsection}{Pasaje de par\IeC {\'a}metros para una funci\IeC {\'o}n}{43}{section*.9}
+\contentsline {subsubsection}{Sentencia condicional}{44}{section*.10}
+\contentsline {subsubsection}{Sentencia repetitiva}{45}{section*.11}
+\contentsline {section}{\numberline {6.8}Problemas encontrados}{45}{section.6.8}
+\contentsline {section}{\numberline {6.9}Posibles mejoras}{45}{section.6.9}
+\contentsline {section}{\numberline {6.10}Conclusi\IeC {\'o}n}{45}{section.6.10}
+\contentsline {chapter}{Ap\IeC {\'e}ndice}{47}{chapter*.12}
+\contentsline {section}{\numberline {A.1}Pseudoc\IeC {\'o}digo Analizador Sint\IeC {\'a}ctico}{47}{section.Alph0.1}

@@ -1,0 +1,44 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{public} \PYG{k+kd}{class} \PYG{n+nc}{Ambiente} \PYG{o}{\PYGZob{}}
+	\PYG{n}{Ambiente} \PYG{n}{padre}\PYG{o}{;} \PYG{c+c1}{//ambiente padre}
+	\PYG{c+c1}{//puede ser program, function o procedure}
+	\PYG{k+kd}{private} \PYG{n}{String} \PYG{n}{tipoAmbiente}\PYG{o}{;}
+	\PYG{c+c1}{//nombre del ambiente}
+	\PYG{k+kd}{private} \PYG{n}{String} \PYG{n}{nombre}\PYG{o}{;}
+	\PYG{c+c1}{//Asocia un identificador a su type Void para procedimientos}
+	\PYG{k+kd}{private} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{,} \PYG{n}{String}\PYG{o}{\PYGZgt{}} \PYG{n}{tipos}\PYG{o}{;}
+	\PYG{c+c1}{//Asocia un nombre de un identificador de funcion o procedimiento a su lista}
+	\PYG{c+c1}{//de parametros (solo el type de los parametros), como \PYGZlt{}nombreFuncion, parametros\PYGZgt{}}
+	\PYG{k+kd}{private} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{,} \PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{parametros}\PYG{o}{;}
+
+	\PYG{k+kd}{public} \PYG{n+nf}{Ambiente}\PYG{o}{(}\PYG{n}{String} \PYG{n}{tipoAmbiente}\PYG{o}{,} \PYG{n}{String} \PYG{n}{nombre}\PYG{o}{,} \PYG{n}{Ambiente} \PYG{n}{padre}\PYG{o}{)} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{n}{Ambiente} \PYG{n+nf}{getPadre}\PYG{o}{()} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{n}{String} \PYG{n+nf}{getTipoAmbiente}\PYG{o}{()} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{setTipoAmbiente}\PYG{o}{(}\PYG{n}{String} \PYG{n}{tipoAmbiente}\PYG{o}{)} \PYG{o}{\PYGZob{}} \PYG{o}{\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{n}{String} \PYG{n+nf}{getNombre}\PYG{o}{()} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{,} \PYG{n}{String}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{getTipos}\PYG{o}{()} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{\PYGZgt{}} \PYG{n+nf}{getParametros}\PYG{o}{(}\PYG{n}{String} \PYG{n}{id}\PYG{o}{)} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{setParametros}\PYG{o}{(}\PYG{n}{String} \PYG{n}{id}\PYG{o}{,} \PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{\PYGZgt{}} \PYG{n}{parametros}\PYG{o}{)} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{addParametro}\PYG{o}{(}\PYG{n}{String} \PYG{n}{id}\PYG{o}{,} \PYG{n}{String} \PYG{n}{tipo}\PYG{o}{)} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{addVariable}\PYG{o}{(}\PYG{n}{String} \PYG{n}{id}\PYG{o}{,} \PYG{n}{String} \PYG{n}{tipo}\PYG{o}{)} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{addFunction}\PYG{o}{(}\PYG{n}{String} \PYG{n}{id}\PYG{o}{,} \PYG{n}{String} \PYG{n}{tipo}\PYG{o}{)} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{addProcedure}\PYG{o}{(}\PYG{n}{String} \PYG{n}{id}\PYG{o}{)} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{n}{String} \PYG{n+nf}{getTipo}\PYG{o}{(}\PYG{n}{String} \PYG{n}{id}\PYG{o}{)} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{k+kt}{boolean} \PYG{n+nf}{equals}\PYG{o}{(}\PYG{n}{String} \PYG{n}{ident}\PYG{o}{,} \PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{\PYGZgt{}} \PYG{n}{param}\PYG{o}{)} \PYG{o}{\PYGZob{}\PYGZcb{}}
+
+	\PYG{k+kd}{public} \PYG{n}{String} \PYG{n+nf}{toString}\PYG{o}{()} \PYG{o}{\PYGZob{}\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

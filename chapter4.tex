@@ -289,14 +289,14 @@ Para simplificar el nombre de los nodos, se abrevió el nombre de los no termina
 \centering
 \begin{tikzpicture}[scale=0.65, node distance = 2.5cm, state/.style={circle, draw, minimum size=1cm}]
 \tikzset{every state/.append style={thick, fill=gray!10}}
-\node[state] (0) at (0,6) {$VD$};
-\node[state] (1) at (-3,4) {$IL$};
-\node[state] (2) at (3,4) {$T$};
-\node[state] (3) at (-1,2) {$IL\_1$};
-\node[state] (4) at (-5,2) {$I$};
-\node[state] (5) at (-1,0) {$IL$};
-\node[state] (6) at (1,-2) {$IL\_1$};
-\node[state] (7) at (-3,-2) {$I$};
+\node[state] (0) at (0,6) {VD};
+\node[state] (1) at (-3,4) {IL};
+\node[state] (2) at (3,4) {T};
+\node[state] (3) at (-1,2) {IL\_1};
+\node[state] (4) at (-5,2) {I};
+\node[state] (5) at (-1,0) {IL};
+\node[state] (6) at (1,-2) {IL\_1};
+\node[state] (7) at (-3,-2) {I};
 
 \node[right] (8) at (6,4) {{\bf ($addAmbiente(list\_id, type)$)}};
 
@@ -324,55 +324,113 @@ Para simplificar el nombre de los nodos, se abrevió el nombre de los no termina
 ;
 \end{tikzpicture}
 \caption{Declaración simple de variables.}
-\label{fig:arbol_declaracio_var}
+\label{fig:arbol_declaracion_var}
 \end{figure}
 
-En la figura \ref{fig:arbol_declaracio_var} se ve un árbol de derivación anotado teniendo en cuenta la gramática de atributos  y el uso de la tabla de símbolos, para la definición de dos variables integer: ``VAR a,b:integer;''. Cuando el no terminal VD obtiene el atributo list\_id que tiene la lista de identificadores declarados y type que tiene el tipo de dato de los identificadores, puede insertarlos en el Ambiente actual, que representa la tabla de símbolos de la subrutina que está analizando.
-
+En la figura \ref{fig:arbol_declaracion_var} se ve un árbol de derivación anotado teniendo en cuenta la gramática de atributos  y el uso de la tabla de símbolos, para la definición de dos variables integer: ``VAR a,b:integer;''. Cuando el no terminal VD obtiene el atributo list\_id que tiene la lista de identificadores declarados y type que tiene el tipo de dato de los identificadores, puede insertarlos en el Ambiente actual, que representa la tabla de símbolos de la subrutina que está analizando.
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[scale=0.65, node distance = 2.5cm, state/.style={circle, draw, minimum size=1cm},
-triangle/.style={fill = light blue,isosceles triangle,draw=,thick,shape border rotate=90,isosceles triangle stretches=true, minimum height=20mm,minimum width=15mm,inner sep=0,yshift={-10mm}},
-large triangle/.style={triangle,minimum width = 27mm,minimum height=36mm,yshift={-11mm}}]
+\begin{tikzpicture}
 \tikzset{every state/.append style={thick, fill=gray!10}}
-\node[state] (0) at (0,6) {$VDL$};
-\node[state] (1) at (-3,4) {$VD$};
-\node[state] (2) at (3,4) {$VDL\_1$};
-\node[state] (3) at (-1,2) {$IL\_1$};
-\node[large triangle,yshift={-3mm}] (4) at (-5,2) {$I$};
-\node[state] (5) at (-1,0) {$IL$};
-\node[state] (6) at (1,-2) {$IL\_1$};
-\node[state] (7) at (-3,-2) {$I$};
+\node[state] (0) at (0,6) {VDL};
+\node[state] (1) at (-2,4) {VD};
+\node[state] (2) at (2,4) {VDL\_1};
+\node[coordinate] at (-2,2) (3) {};
+\node at (-2,2) [isosceles triangle, shape border rotate=+90,
+draw,minimum size=8mm,minimum height=2cm,
+anchor=north] (3triangle) { };
+%Inserta a,b:integer como en el árbol de la fig. \ref{fig:arbol_declaracion_var}
+\node[right] (5) at (-4,-0.5) {Inserta a,b:integer};
+\node[right] (6) at (-4,-1) {como en el árbol de la fig. \ref{fig:arbol_declaracion_var}};
 
-\node[right] (8) at (6,4) {{\bf ($addAmbiente(list\_id, type)$)}};
+\node[state] (4) at (2,2) {VD};
+\node[coordinate] at (2,0) (5) {};
+\node at (2,0) [isosceles triangle, shape border rotate=+90,
+draw,minimum size=8mm,minimum height=2cm,
+anchor=north] (5triangle) { };
+%Inserta c:boolean como en el árbol de la fig. \ref{fig:arbol_declaracion_var}
+\node[right] (7) at (0,-2.5) {Inserta c:boolean};
+\node[right] (8) at (0,-3) {como en el árbol de la fig. \ref{fig:arbol_declaracion_var}};
 
 \path[->,>=stealth]
 (0) edge[above] node{$ $} (1)
     edge[above] node{$ $} (2)
-    edge[bend left=25] node{$ $} (8)
 
 (1) edge[above] node{$ $} (3)
-    edge[above] node{$ $} (4)
-    edge[bend left, left] node{$list\_id=\{'a','b'\}$} (0)
 
-(2) edge[bend right, right] node{$type=integer$} (0)
+(2) edge[above] node{$ $} (4)
 
-(3) edge[bend right, right] node{$'b'$} (1)
-    edge[above] node{$ $} (5)
-    
-(4) edge[bend left, left] node{$'a'$} (1)
-
-(5) edge[above] node{$ $} (6)
-    edge[above] node{$ $} (7)
-
-(7) edge[bend left, left] node{$'b'$} (5)
-   % edge[bend left, left] node{$ $} (3)
+(4) edge[above] node{$ $} (5)
 ;
 \end{tikzpicture}
 \caption{Declaración de listas de variables.}
-\label{fig:arbol_declaracio_list_var}
+\label{fig:arbol_declaracion_list_var}
 \end{figure}
+
+En la figura \ref{fig:arbol_declaracion_list_var} se ve el árbol de derivación para insertar una lista de variables con la siguiente sintaxis: ``VAR a,b:integer; c:boolean''. Así, la subrutina que está siendo analizada va a recibir todas sus variables sin importar cómo sea la declaración de variables.
+
+En el siguiente árbol de la figura \ref{fig:arbol_declaracion_param} veremos la declaración de un procedimiento con parámetros, similar a la declaración de variables pero jugando un poco más con la tabla de símbolos.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[scale=0.65, node distance = 2.5cm, state/.style={circle, draw, minimum size=1cm}]
+	\tikzset{every state/.append style={thick, fill=gray!10}}
+	\node[state] (0) at (0,6) {PD};
+	\node[state] (1) at (0,4) {PH};
+	\node[state] (2) at (-3,2.5) {I};
+	\node[state] (3) at (0,1.5) {P};
+	\node[state] (4) at (0,-0.5) {P\_2};
+	\node[state] (5) at (0,-3) {PDL};
+	\node[state] (6) at (0,-5) {PRD};
+	\node[state] (7) at (-3,-7) {IL};
+	\node[state] (8) at (3,-7) {T};
+	\node[state] (9) at (-5,-8) {I};	
+	
+	\node[coordinate] at (5,3) (InsTS) {};
+	\node[right] (10) at (5,3) {{\bf ($TSproc = crearTS('proc',TSPadre)$}};
+	\node[right] (11) at (5,2.5) {{\bf ($addVariables(TSProc,{'a'}, 'integer')$)}};
+	\node[right] (12) at (5,2) {{\bf ($addParametros(TSPadre,'proc', 'integer')$)}};
+	
+	\path[->,>=stealth]
+	(0) edge[above] node{$ $} (1)
+	
+	(1) edge[above] node{$ $} (2)
+	edge[above] node{$ $} (3)
+	edge[bend left=25] node{$ $} (InsTS)
+	
+	(2) edge[bend left, left] node{$nombre='proc'$} (1)
+	
+	(3) edge[above] node{$ $} (4)
+	edge[bend right, right] node{$\{\{'integer','a'\}\}$} (1)
+	
+	(4) edge[bend right, right] node{$\{\{'integer','a'\}\}$} (3)
+	edge[above] node{$ $} (5)
+	
+	(5) edge[above] node{$ $} (6)
+	edge[bend right, right] node{$\{\{'integer','a'\}\}$} (4)
+	
+	(6) edge[above] node{$ $} (7)
+	edge[above] node{$ $} (8)
+	edge[bend right, right] node{$\{\{'integer','a'\}\}$} (5)
+	
+	(7) edge[above] node{$ $} (9)
+	 edge[bend left, left] node{$\{'a'\}$} (6)
+	 
+	(8) edge[bend right, right] node{$'integer'$} (6)
+	 
+	(9) edge[bend left, left] node{$'a'$} (7)
+	% edge[bend left, left] node{$ $} (3)
+	;
+	\end{tikzpicture}
+	\caption{Declaración simple de variables.}
+	\label{fig:arbol_declaracion_param}
+\end{figure}
+
+En la figura \ref{fig:arbol_declaracion_param} se muestra el análisis para la declaración del encabezado de un procedimiento con la sintaxis: ``procedure proc(a:integer);''. El árbol muestra cómo se obtiene el nombre del procedimiento, sus parámetros y luego en el nodo PH se procede a crear la nueva tabla de símbolos para ese procedimiento, la cual recibe como parámetro el nombre del procedimiento y la tabla de símbolos del padre (teniendo en cuenta su estructura lexicográfica). Luego se agregan los parámetros como variables a la tabla del procedimiento; y se agregan los tipos de los parámetros a la tabla del procedimiento padre, para que cuando se invoque a \emph{proc}, pueda chequear la cantidad y el tipo de los parámetros que se le envían.
+
+Si la declaración de parámetros fuera la siguiente: (a,b:integer;c:boolean), en el nodo PRD se armaría la siguiente lista: \{\{'integer','a','b'\},\{'boolean','c'\}\}, y una vez que llegue a PH se ejecutaría \\ 
+addVariables(TSProc,'a','integer'), addVariables(TSProc,'b','integer'), addVariables(TSProc,'c','boolean') y \\ addParametros(TSPadre,'proc',\{'integer','integer','boolean'\}). 
 
 \subsection{Instructivos de instalación y uso}
 Para usar el programa es idéntico que para el Análizador Sintáctico, al ser un programa portable, solo se requiere la compilación a través del comando \emph{javac *.java} o cargando el proyecto en el NetBeans y usando este para compilar.

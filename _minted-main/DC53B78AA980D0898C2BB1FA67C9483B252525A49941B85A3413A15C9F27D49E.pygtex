@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{parameters}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{if} \PYG{o}{(}\PYG{n}{preanalisis} \PYG{o}{==} \PYG{n}{TK\PYGZus{}OPAR}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+		\PYG{n}{match}\PYG{o}{(}\PYG{n}{TK\PYGZus{}OPAR}\PYG{o}{);}
+		\PYG{n}{parameters\PYGZus{}2}\PYG{o}{();}
+		\PYG{n}{match}\PYG{o}{(}\PYG{n}{TK\PYGZus{}CPAR}\PYG{o}{);}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

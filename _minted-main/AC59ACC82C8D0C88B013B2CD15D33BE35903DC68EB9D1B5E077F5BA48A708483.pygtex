@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+ \PYG{k+kd}{private} \PYG{n}{String} \PYG{n+nf}{factor}\PYG{o}{(}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+    \PYG{esc}{\dots}
+    \PYG{k}{if} \PYG{o}{(}\PYG{n}{ambiente}\PYG{o}{.}\PYG{n+na}{getClase}\PYG{o}{(}\PYG{n}{id}\PYG{o}{)}\PYG{o}{.}\PYG{n+na}{equals}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}variable\PYGZdq{}}\PYG{o}{)} \PYG{o}{|}\PYG{o}{|} \PYG{n}{ambiente}\PYG{o}{.}\PYG{n+na}{getClase}\PYG{o}{(}\PYG{n}{id}\PYG{o}{)}\PYG{o}{.}\PYG{n+na}{equals}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}parametro\PYGZdq{}}\PYG{o}{)}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{mepa} \PYG{o}{+}\PYG{o}{=} \PYG{l+s}{\PYGZdq{}APVL \PYGZdq{}} \PYG{o}{+} \PYG{n}{ambiente}\PYG{o}{.}\PYG{n+na}{getProfundidad}\PYG{o}{(}\PYG{n}{id}\PYG{o}{)} \PYG{o}{+} \PYG{l+s}{\PYGZdq{} \PYGZdq{}} \PYG{o}{+} \PYG{n}{ambiente}\PYG{o}{.}\PYG{n+na}{getOffset}\PYG{o}{(}\PYG{n}{id}\PYG{o}{)} \PYG{o}{+} \PYG{l+s}{\PYGZdq{}\PYGZbs{}n\PYGZdq{}}\PYG{o}{;}
+        \PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+            \PYG{k}{if} \PYG{o}{(}\PYG{n}{ambiente}\PYG{o}{.}\PYG{n+na}{getClase}\PYG{o}{(}\PYG{n}{id}\PYG{o}{)}\PYG{o}{.}\PYG{n+na}{equalsIgnoreCase}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}funcion\PYGZdq{}}\PYG{o}{)}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+                \PYG{n}{call\PYGZus{}procedure\PYGZus{}or\PYGZus{}function}\PYG{o}{(}\PYG{n}{id}\PYG{o}{)}\PYG{o}{;}
+            \PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+            \PYG{n}{errorSemantico}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}bad\PYGZus{}uso\PYGZus{}proc\PYGZdq{}}\PYG{o}{,} \PYG{l+s}{\PYGZdq{}No se permite uso de procedimientos en expresiones. Causa: retorno void.\PYGZdq{}}\PYG{o}{)}\PYG{o}{;}
+            \PYG{o}{\PYGZcb{}}
+      \PYG{esc}{\dots}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

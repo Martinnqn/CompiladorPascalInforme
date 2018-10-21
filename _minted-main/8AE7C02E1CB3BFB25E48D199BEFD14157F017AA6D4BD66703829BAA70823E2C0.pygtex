@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{Program} \PYG{n}{Example3}\PYG{o}{;}
+\PYG{k}{Var}
+    \PYG{n}{Num1}\PYG{o}{,} \PYG{n}{Num2}\PYG{o}{,} \PYG{n+nb}{Sum} \PYG{o}{:} \PYG{k+kt}{Integer}\PYG{o}{;}
+    \PYG{n+nb+bp}{Result}\PYG{o}{:} \PYG{esc}{!Bool!}\PYG{o}{;}
+\PYG{k}{Begin} \PYG{c+cm}{\PYGZob{}no semicolon\PYGZcb{}}
+    \PYG{n+nb}{Sum} \PYG{o}{:}\PYG{o}{=} \PYG{n}{Num1} \PYG{o}{+} \PYG{n}{Num2}\PYG{o}{;}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{Num1} \PYG{o}{\PYGZgt{}} \PYG{n}{Num2}\PYG{p}{)} \PYG{k}{then}
+        \PYG{n+nb+bp}{Result} \PYG{o}{:}\PYG{o}{=} \PYG{k}{true}
+\PYG{k}{End}\PYG{o}{.}
+\end{Verbatim}

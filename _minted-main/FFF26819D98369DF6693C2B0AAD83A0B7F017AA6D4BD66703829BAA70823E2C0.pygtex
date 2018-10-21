@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{Program} \PYG{n}{Example2}\PYG{o}{;}
+\PYG{k}{Var}
+    \PYG{n}{Num1}\PYG{o}{,} \PYG{n}{Num2}\PYG{o}{,} \PYG{n}{Sum1} \PYG{o}{:} \PYG{k+kt}{Integer}\PYG{o}{;}
+\PYG{k}{Begin}
+    \PYG{n}{Num1} \PYG{o}{:}\PYG{o}{=} \PYG{l+m+mi}{2}\PYG{o}{;}
+    \PYG{esc}{!Sum2!} \PYG{o}{:}\PYG{o}{=} \PYG{n}{Num1} \PYG{o}{+} \PYG{n}{Num2}\PYG{o}{;}
+\PYG{k}{End}\PYG{o}{.}
+\end{Verbatim}

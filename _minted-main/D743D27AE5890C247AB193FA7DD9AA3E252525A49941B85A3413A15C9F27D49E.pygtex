@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{factor\PYGZus{}1}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{if} \PYG{o}{(}\PYG{n}{preanalisis} \PYG{o}{==} \PYG{n}{TK\PYGZus{}OPAR}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+		\PYG{n}{call\PYGZus{}procedure\PYGZus{}or\PYGZus{}function}\PYG{o}{();}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

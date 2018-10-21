@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{private} \PYG{n}{String} \PYG{n+nf}{expression\PYGZus{}or\PYGZus{}1}\PYG{o}{(}\PYG{n}{String} \PYG{n}{type}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+	\PYG{k}{if} \PYG{o}{(}\PYG{n}{preanalisis}\PYG{o}{.}\PYG{n+na}{getNombre}\PYG{o}{().}\PYG{n+na}{equals}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}BOOL\PYGZus{}OP\PYGZus{}OR\PYGZdq{}}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+		\PYG{n}{match}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}BOOL\PYGZus{}OP\PYGZus{}OR\PYGZdq{}}\PYG{o}{);}
+		\PYG{n}{String} \PYG{n}{type2} \PYG{o}{=} \PYG{n}{expression\PYGZus{}and}\PYG{o}{();}
+		\PYG{k}{if} \PYG{o}{(}\PYG{n}{not}\PYG{o}{((}\PYG{n}{type}\PYG{o}{.}\PYG{n+na}{equalsIgnoreCase}\PYG{o}{(}\PYG{n}{type2}\PYG{o}{))} \PYG{n}{and} \PYG{n}{type}\PYG{o}{.}\PYG{n+na}{equalsIgnoreCase}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}TYPE\PYGZus{}BOOL\PYGZdq{}}\PYG{o}{)))} \PYG{o}{\PYGZob{}}
+			\PYG{n}{errorSemantico}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}type\PYGZdq{}}\PYG{o}{,} \PYG{n}{type} \PYG{o}{+} \PYG{l+s}{\PYGZdq{} y \PYGZdq{}} \PYG{o}{+} \PYG{n}{type2} \PYG{o}{+} \PYG{l+s}{\PYGZdq{} no aplicables a operador OR\PYGZdq{}}\PYG{o}{);}
+		\PYG{o}{\PYGZcb{}}
+		\PYG{n}{type} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}TK\PYGZus{}TYPE\PYGZus{}BOOL\PYGZdq{}}\PYG{o}{;}
+		\PYG{n}{type} \PYG{o}{=} \PYG{n}{expression\PYGZus{}or\PYGZus{}1}\PYG{o}{(}\PYG{n}{type}\PYG{o}{);}
+	\PYG{o}{\PYGZcb{}}
+	\PYG{k}{return} \PYG{n}{type}\PYG{o}{;}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

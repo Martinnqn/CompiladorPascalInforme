@@ -1,0 +1,19 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{expression\PYGZus{}mult}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{switch} \PYG{o}{(}\PYG{n}{preanalisis}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}ID}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}OPAR}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}ADD\PYGZus{}OP\PYGZus{}REST}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}NOT\PYGZus{}OP}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}BOOLEAN\PYGZus{}TRUE}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}BOOLEAN\PYGZus{}FALSE}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}NUMBER}\PYG{o}{:}
+			\PYG{n}{factor}\PYG{o}{();}
+			\PYG{n}{expression\PYGZus{}mult\PYGZus{}1}\PYG{o}{();}
+			\PYG{k}{break}\PYG{o}{;}
+		\PYG{k}{default}\PYG{o}{:}
+			\PYG{n}{error}\PYG{o}{();}
+			\PYG{k}{break}\PYG{o}{;}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

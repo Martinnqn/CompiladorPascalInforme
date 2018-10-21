@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{program\PYGZus{}heading}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{if} \PYG{o}{(}\PYG{n}{preanalisis} \PYG{o}{==} \PYG{n}{TK\PYGZus{}PROGRAM}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+		\PYG{n}{match}\PYG{o}{(}\PYG{n}{TK\PYGZus{}PROGRAM}\PYG{o}{);}
+		\PYG{n}{identifier}\PYG{o}{();}
+		\PYG{n}{match}\PYG{o}{(}\PYG{n}{TK\PYGZus{}ENDSTNC}\PYG{o}{);}
+	\PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+		\PYG{n}{error}\PYG{o}{();}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

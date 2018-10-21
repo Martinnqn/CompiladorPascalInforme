@@ -1,0 +1,42 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k+kd}{public} \PYG{k+kd}{class} \PYG{n+nc}{Ambiente} \PYG{o}{\PYGZob{}}
+
+    \PYG{esc}{\dots}
+
+    \PYG{c+c1}{//profundidad del ambiente}
+    \PYG{k+kd}{private} \PYG{k+kt}{int} \PYG{n}{profundidad} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{o}{;}
+    \PYG{c+c1}{//ultimo offset utilizado para una variable}
+    \PYG{k+kd}{private} \PYG{k+kt}{int} \PYG{n}{lastOffset} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{;}
+    \PYG{c+c1}{//ultimo offset utilizado para un parametro}
+    \PYG{k+kd}{private} \PYG{k+kt}{int} \PYG{n}{lastParameterOffset} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{3}\PYG{o}{;}
+    \PYG{c+c1}{//offset utilizado para el retorno de una funcion}
+    \PYG{k+kd}{private} \PYG{k+kt}{int} \PYG{n}{returnOffset} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{4}\PYG{o}{;}
+    \PYG{c+c1}{//label de llamada para un procediemiento o funcion}
+    \PYG{k+kd}{private} \PYG{k+kt}{int} \PYG{n}{label} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{o}{;}
+
+    \PYG{c+c1}{//Asocia un identificador (variable) a su profundidad}
+    \PYG{k+kd}{private} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{,} \PYG{n}{Integer}\PYG{o}{\PYGZgt{}} \PYG{n}{profundidades}\PYG{o}{;}
+    \PYG{c+c1}{//Asocia un identificador (variable) a su offset}
+    \PYG{k+kd}{private} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{,} \PYG{n}{Integer}\PYG{o}{\PYGZgt{}} \PYG{n}{offsets}\PYG{o}{;}
+    \PYG{c+c1}{//Asocia un identificador a su clase (variable, parametro, funcion, procedimiento)}
+    \PYG{k+kd}{private} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{,} \PYG{n}{String}\PYG{o}{\PYGZgt{}} \PYG{n}{clases}\PYG{o}{;}
+    \PYG{c+c1}{//Asocia un identificador de procedimiento o funcion a su label de llamada}
+    \PYG{k+kd}{private} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{,} \PYG{n}{Integer}\PYG{o}{\PYGZgt{}} \PYG{n}{labels}\PYG{o}{;}
+
+    \PYG{esc}{\dots}
+
+    \PYG{c+c1}{//Asocia un identificador a su type y profundidad.}
+    \PYG{k+kd}{public} \PYG{k+kt}{void} \PYG{n+nf}{addVariable}\PYG{o}{(}\PYG{n}{String} \PYG{n}{id}\PYG{o}{,} \PYG{n}{String} \PYG{n}{tipo}\PYG{o}{,} \PYG{k+kt}{int} \PYG{n}{profundidad}\PYG{o}{,} \PYG{k+kt}{boolean} \PYG{n}{isParameter}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{tipos}\PYG{o}{.}\PYG{n+na}{put}\PYG{o}{(}\PYG{n}{id}\PYG{o}{.}\PYG{n+na}{toUpperCase}\PYG{o}{(}\PYG{o}{)}\PYG{o}{,} \PYG{n}{tipo}\PYG{o}{.}\PYG{n+na}{toUpperCase}\PYG{o}{(}\PYG{o}{)}\PYG{o}{)}\PYG{o}{;}
+        \PYG{n}{profundidades}\PYG{o}{.}\PYG{n+na}{put}\PYG{o}{(}\PYG{n}{id}\PYG{o}{.}\PYG{n+na}{toUpperCase}\PYG{o}{(}\PYG{o}{)}\PYG{o}{,} \PYG{n}{profundidad}\PYG{o}{)}\PYG{o}{;}
+        \PYG{k}{if} \PYG{o}{(}\PYG{n}{isParameter}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+            \PYG{n}{offsets}\PYG{o}{.}\PYG{n+na}{put}\PYG{o}{(}\PYG{n}{id}\PYG{o}{.}\PYG{n+na}{toUpperCase}\PYG{o}{(}\PYG{o}{)}\PYG{o}{,} \PYG{n}{lastParameterOffset}\PYG{o}{+}\PYG{o}{+}\PYG{o}{)}\PYG{o}{;}
+            \PYG{n}{clases}\PYG{o}{.}\PYG{n+na}{put}\PYG{o}{(}\PYG{n}{id}\PYG{o}{.}\PYG{n+na}{toUpperCase}\PYG{o}{(}\PYG{o}{)}\PYG{o}{,} \PYG{l+s}{\PYGZdq{}parametro\PYGZdq{}}\PYG{o}{)}\PYG{o}{;}
+        \PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+            \PYG{n}{offsets}\PYG{o}{.}\PYG{n+na}{put}\PYG{o}{(}\PYG{n}{id}\PYG{o}{.}\PYG{n+na}{toUpperCase}\PYG{o}{(}\PYG{o}{)}\PYG{o}{,} \PYG{n}{lastOffset}\PYG{o}{+}\PYG{o}{+}\PYG{o}{)}\PYG{o}{;}
+            \PYG{n}{clases}\PYG{o}{.}\PYG{n+na}{put}\PYG{o}{(}\PYG{n}{id}\PYG{o}{.}\PYG{n+na}{toUpperCase}\PYG{o}{(}\PYG{o}{)}\PYG{o}{,} \PYG{l+s}{\PYGZdq{}variable\PYGZdq{}}\PYG{o}{)}\PYG{o}{;}
+        \PYG{o}{\PYGZcb{}}
+    \PYG{o}{\PYGZcb{}}
+    \PYG{esc}{\dots}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{Program} \PYG{n}{MepaFuncion}\PYG{o}{;}
+\PYG{k}{Var}
+    \PYG{n}{a}\PYG{o}{:} \PYG{k+kt}{integer}\PYG{o}{;}
+\PYG{k}{function} \PYG{n+nf}{fact}\PYG{p}{(}\PYG{n}{n}\PYG{o}{:}\PYG{k+kt}{integer}\PYG{p}{)}\PYG{o}{:}\PYG{k+kt}{integer}\PYG{o}{;}
+\PYG{k}{Begin}
+    \PYG{k}{if} \PYG{n}{n} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{2} \PYG{k}{then} \PYG{n}{fact} \PYG{o}{:}\PYG{o}{=} \PYG{l+m+mi}{1}
+    \PYG{k}{else} \PYG{n}{fact} \PYG{o}{:}\PYG{o}{=} \PYG{n}{fact}\PYG{p}{(}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{*}\PYG{n}{n}
+\PYG{k}{End}\PYG{o}{;}
+\PYG{k}{Begin}
+    \PYG{n}{a}\PYG{o}{:}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{o}{;}
+    \PYG{n+nb}{write} \PYG{p}{(}\PYG{n}{fact}\PYG{p}{(}\PYG{n}{a}\PYG{p}{))}
+\PYG{k}{End}\PYG{o}{.}
+\end{Verbatim}

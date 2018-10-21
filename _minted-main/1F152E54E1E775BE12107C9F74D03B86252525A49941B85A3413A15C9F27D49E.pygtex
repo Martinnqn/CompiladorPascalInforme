@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{match}\PYG{o}{(}\PYG{n}{terminal}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+	\PYG{k}{if} \PYG{o}{(}\PYG{n}{preanalisis} \PYG{o}{==} \PYG{n}{terminal}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+		\PYG{n}{preanalisis} \PYG{o}{=} \PYG{n}{tokenSiguiente}\PYG{o}{();}
+	\PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+		\PYG{n}{error}\PYG{o}{();}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

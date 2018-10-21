@@ -1,0 +1,17 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{statement\PYGZus{}list}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{switch} \PYG{o}{(}\PYG{n}{preanalisis}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}ID}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}WRITE}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}READ}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}IF}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}WHILE}\PYG{o}{:}
+			\PYG{n}{statement}\PYG{o}{();}
+			\PYG{n}{statement\PYGZus{}list\PYGZus{}1}\PYG{o}{();}
+			\PYG{k}{break}\PYG{o}{;}
+		\PYG{k}{default}\PYG{o}{:}
+			\PYG{n}{error}\PYG{o}{();}
+			\PYG{k}{break}\PYG{o}{;}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{variable\PYGZus{}declaration\PYGZus{}block}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{if} \PYG{o}{(}\PYG{n}{preanalisis} \PYG{o}{==} \PYG{n}{TK\PYGZus{}VAR}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+		\PYG{n}{match}\PYG{o}{(}\PYG{n}{TK\PYGZus{}VAR}\PYG{o}{);}
+		\PYG{n}{variable\PYGZus{}declaration\PYGZus{}list}\PYG{o}{();}
+	\PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+		\PYG{n}{error}\PYG{o}{();}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{block}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{switch} \PYG{o}{(}\PYG{n}{preanalisis}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}VAR}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}PROCEDURE}\PYG{o}{:}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}FUNCTION}\PYG{o}{:}
+			\PYG{n}{declaration\PYGZus{}block}\PYG{o}{();}
+			\PYG{n}{multiple\PYGZus{}statement}\PYG{o}{();}
+			\PYG{k}{break}\PYG{o}{;}
+		\PYG{k}{case} \PYG{n}{TK\PYGZus{}BEGIN}\PYG{o}{:}
+			\PYG{n}{multiple\PYGZus{}statement}\PYG{o}{();}
+			\PYG{k}{break}\PYG{o}{;}
+		\PYG{k}{default}\PYG{o}{:}
+			\PYG{n}{error}\PYG{o}{();}
+			\PYG{k}{break}\PYG{o}{;}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

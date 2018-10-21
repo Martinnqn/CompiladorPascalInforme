@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{private} \PYG{k+kt}{void} \PYG{n+nf}{error}\PYG{o}{(}\PYG{n}{String} \PYG{n}{terminal}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+	\PYG{k}{throw} \PYG{k}{new} \PYG{n}{RuntimeException}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}sintactico\PYGZdq{}}\PYG{o}{,} \PYG{k}{new} \PYG{n}{Throwable}\PYG{o}{(}
+			\PYG{l+s}{\PYGZdq{}\PYGZbs{}nError sintactico: linea \PYGZdq{}} \PYG{o}{+} \PYG{n}{lexico}\PYG{o}{.}\PYG{n+na}{getNroLinea}\PYG{o}{()}
+			\PYG{o}{+} \PYG{l+s}{\PYGZdq{} posicion \PYGZdq{}} \PYG{o}{+} \PYG{o}{(}\PYG{n}{lexico}\PYG{o}{.}\PYG{n+na}{getPos}\PYG{o}{()} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{o}{)} \PYG{o}{+} \PYG{l+s}{\PYGZdq{}.\PYGZbs{}nSimbolo de preanalisis \PYGZdq{}}
+			\PYG{o}{+} \PYG{n}{preanalisis}\PYG{o}{.}\PYG{n+na}{getNombre}\PYG{o}{()} \PYG{o}{+} \PYG{l+s}{\PYGZdq{} no esperado. Se esperaba \PYGZdq{}} \PYG{o}{+} \PYG{n}{terminal}\PYG{o}{));}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

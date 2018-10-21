@@ -1,0 +1,21 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{private} \PYG{k+kt}{void} \PYG{n+nf}{variable\PYGZus{}declaration}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{if} \PYG{o}{(}\PYG{n}{preanalisis}\PYG{o}{.}\PYG{n+na}{getNombre}\PYG{o}{().}\PYG{n+na}{equals}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}ID\PYGZdq{}}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+		\PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{\PYGZgt{}} \PYG{n}{idents} \PYG{o}{=} \PYG{k}{new} \PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+		\PYG{n}{identifier\PYGZus{}list}\PYG{o}{(}\PYG{n}{idents}\PYG{o}{);}
+		\PYG{n}{match}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}TPOINTS\PYGZdq{}}\PYG{o}{);}
+		\PYG{n}{String} \PYG{n}{type} \PYG{o}{=} \PYG{n}{type}\PYG{o}{();}
+		\PYG{c+c1}{//carga los identificadores y sus tipos.}
+		\PYG{k}{for} \PYG{o}{(}\PYG{n}{String} \PYG{n}{id} \PYG{o}{:} \PYG{n}{idents}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+			\PYG{c+c1}{//chequear unicidad}
+			\PYG{k}{if} \PYG{o}{(}\PYG{n}{tablaActual}\PYG{o}{.}\PYG{n+na}{getTipos}\PYG{o}{().}\PYG{n+na}{containsKey}\PYG{o}{(}\PYG{n}{id}\PYG{o}{)} \PYG{o}{||} \PYG{n}{tablaActual}\PYG{o}{.}\PYG{n+na}{getNombre}\PYG{o}{().}\PYG{n+na}{equals}\PYG{o}{(}\PYG{n}{id}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+				\PYG{n}{errorSemantico}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}unicidad\PYGZdq{}}\PYG{o}{,} \PYG{n}{id}\PYG{o}{);}
+			\PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+				\PYG{n}{tablaActual}\PYG{o}{.}\PYG{n+na}{addIdentificador}\PYG{o}{(}\PYG{n}{id}\PYG{o}{,} \PYG{n}{type}\PYG{o}{);}
+			\PYG{o}{\PYGZcb{}}
+		\PYG{o}{\PYGZcb{}}
+	\PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+		\PYG{n}{errorSintactico}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}ID\PYGZdq{}}\PYG{o}{);}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

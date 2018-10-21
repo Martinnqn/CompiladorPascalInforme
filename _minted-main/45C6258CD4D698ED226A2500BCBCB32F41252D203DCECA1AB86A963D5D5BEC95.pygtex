@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{if} \PYG{p}{(}\PYG{n}{cond\PYGZus{}1}\PYG{p}{)} \PYG{k}{then}
+	\PYG{k}{if} \PYG{p}{(}\PYG{n}{cond\PYGZus{}2}\PYG{p}{)} \PYG{k}{then}
+		\PYG{n}{code\PYGZus{}then}
+	\PYG{k}{else}
+		\PYG{n}{code\PYGZus{}else}
+\end{Verbatim}

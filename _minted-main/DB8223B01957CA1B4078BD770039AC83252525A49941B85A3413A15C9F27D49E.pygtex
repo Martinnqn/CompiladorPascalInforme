@@ -1,0 +1,40 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{private} \PYG{k+kt}{void} \PYG{n+nf}{procedure\PYGZus{}heading}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+	\PYG{k}{if} \PYG{o}{(}\PYG{n}{preanalisis}\PYG{o}{.}\PYG{n+na}{getNombre}\PYG{o}{().}\PYG{n+na}{equals}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}PROCEDURE\PYGZdq{}}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+		\PYG{n}{match}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}PROCEDURE\PYGZdq{}}\PYG{o}{);}
+		\PYG{n}{String} \PYG{n}{nombre} \PYG{o}{=} \PYG{n}{identifier}\PYG{o}{();}
+		\PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}}\PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{listaParametros} \PYG{o}{=} \PYG{k}{new} \PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}\PYGZgt{}();}
+		\PYG{n}{parameters}\PYG{o}{(}\PYG{n}{listaParametros}\PYG{o}{);}
+		\PYG{c+c1}{//se agrega el identificador al padre}
+		\PYG{k}{if} \PYG{o}{(}\PYG{n}{tablaActual}\PYG{o}{.}\PYG{n+na}{getTipos}\PYG{o}{().}\PYG{n+na}{containsKey}\PYG{o}{(}\PYG{n}{nombre}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+			\PYG{n}{errorSemantico}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}unicidad\PYGZdq{}}\PYG{o}{,} \PYG{n}{nombre}\PYG{o}{);}
+		\PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+			\PYG{n}{tablaActual}\PYG{o}{.}\PYG{n+na}{addProcedure}\PYG{o}{(}\PYG{n}{nombre}\PYG{o}{);}
+		\PYG{o}{\PYGZcb{}}
+		\PYG{c+c1}{//se crea la nueva tabla para el ambiente actual del procedimiento}
+		\PYG{n}{Ambiente} \PYG{n}{padre} \PYG{o}{=} \PYG{n}{tablaActual}\PYG{o}{;}
+		\PYG{n}{tablaActual} \PYG{o}{=} \PYG{k}{new} \PYG{n}{Ambiente}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}PROCEDURE\PYGZdq{}}\PYG{o}{,} \PYG{n}{nombre}\PYG{o}{,} \PYG{n}{padre}\PYG{o}{);}
+		\PYG{n}{String} \PYG{n}{id}\PYG{o}{;}
+		\PYG{n}{String} \PYG{n}{type}\PYG{o}{;}
+		\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{o}{;}
+		\PYG{n}{LinkedList}\PYG{o}{\PYGZlt{}}\PYG{n}{String}\PYG{o}{\PYGZgt{}} \PYG{n}{aux}\PYG{o}{;}
+		\PYG{k}{while} \PYG{o}{(}\PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{listaParametros}\PYG{o}{.}\PYG{n+na}{size}\PYG{o}{())} \PYG{o}{\PYGZob{}}
+			\PYG{n}{aux} \PYG{o}{=} \PYG{n}{listaParametros}\PYG{o}{.}\PYG{n+na}{get}\PYG{o}{(}\PYG{n}{i}\PYG{o}{);}
+			\PYG{n}{type} \PYG{o}{=} \PYG{n}{aux}\PYG{o}{.}\PYG{n+na}{get}\PYG{o}{(}\PYG{l+m+mi}{0}\PYG{o}{);}
+			\PYG{k}{for} \PYG{o}{(}\PYG{k+kt}{int} \PYG{n}{j} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{o}{;} \PYG{n}{j} \PYG{o}{\PYGZlt{}} \PYG{n}{aux}\PYG{o}{.}\PYG{n+na}{size}\PYG{o}{();} \PYG{n}{j}\PYG{o}{++)} \PYG{o}{\PYGZob{}}
+				\PYG{n}{id} \PYG{o}{=} \PYG{n}{aux}\PYG{o}{.}\PYG{n+na}{get}\PYG{o}{(}\PYG{n}{j}\PYG{o}{);}
+				\PYG{k}{if} \PYG{o}{(}\PYG{n}{tablaActual}\PYG{o}{.}\PYG{n+na}{getTipos}\PYG{o}{().}\PYG{n+na}{containsKey}\PYG{o}{(}\PYG{n}{id}\PYG{o}{)} \PYG{o}{||} \PYG{n}{tablaActual}\PYG{o}{.}\PYG{n+na}{getNombre}\PYG{o}{().}\PYG{n+na}{equals}\PYG{o}{(}\PYG{n}{id}\PYG{o}{))} \PYG{o}{\PYGZob{}}
+					\PYG{n}{errorSemantico}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}unicidad\PYGZdq{}}\PYG{o}{,} \PYG{n}{id}\PYG{o}{);}
+				\PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+					\PYG{n}{tablaActual}\PYG{o}{.}\PYG{n+na}{addIdentificador}\PYG{o}{(}\PYG{n}{id}\PYG{o}{,} \PYG{n}{type}\PYG{o}{);}
+					\PYG{c+c1}{//se le asigna al padre}
+					\PYG{n}{tablaActual}\PYG{o}{.}\PYG{n+na}{getPadre}\PYG{o}{().}\PYG{n+na}{addParametro}\PYG{o}{(}\PYG{n}{nombre}\PYG{o}{,} \PYG{n}{type}\PYG{o}{);}
+				\PYG{o}{\PYGZcb{}}
+			\PYG{o}{\PYGZcb{}}
+			\PYG{n}{i}\PYG{o}{++;}
+		\PYG{o}{\PYGZcb{}}
+	\PYG{o}{\PYGZcb{}} \PYG{k}{else} \PYG{o}{\PYGZob{}}
+		\PYG{n}{errorSintactico}\PYG{o}{(}\PYG{l+s}{\PYGZdq{}TK\PYGZus{}PROCEDURE\PYGZdq{}}\PYG{o}{);}
+	\PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}
