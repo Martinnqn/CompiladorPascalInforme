@@ -1,13 +1,11 @@
 \chapter{Generación de código intermedio}
 
 \section{Introducción}
-Luego de realizar todos los chequeos sintácticos y semánticos propuestos, llega la etapa de generar código ejecutable.
-
-En este capítulo desarrollaremos la especificación y la implementación de la generación de código intermedio del lenguaje, utilizando código de tres direcciones, y generando un código ejecutable por una máquina virtual.
+En este capítulo desarrollaremos la especificación y la implementación de la generación de código intermedio, utilizando código de tres direcciones, y generando un código ejecutable por una máquina virtual.
 
 \section{Descripción del problema}
 \label{sec:gen_cod:descr_prob}
-En esta etapa necesitamos traducir las sentencias del lenguaje pascal a instrucciones de bajo nivel. Para esto, nuestro lenguaje intermedio será MEPa, cuyas instrucciones son ejecutables por la máquina virtual MEPa. 
+En esta etapa necesitamos traducir las sentencias del lenguaje Pascal a instrucciones de más bajo nivel. Para esto, nuestro lenguaje intermedio será MEPa, cuyas instrucciones son ejecutables por la máquina virtual MEPa. 
 
 El objetivo es ampliar la funcionalidad del analizador semántico, embebiéndole sentencias para la generación de instrucciones MEPa.
 
@@ -16,7 +14,7 @@ El resultado de la compilación debe ser un archivo con el código MEPa que resu
 \section{Máquina virtual MEPa}
 MEPa es una máquina hipótetica desarrollada teniendo en cuenta las construcciones de Pascal. Nos permite generar código ejecutable sin necesidad de tener en cuenta las particularidades y complejidad de una máquina real.
 
-La memoria de MEPa se divide en tres secciones: la región del programa, donde almacenará el código del programa; un vector de direcciones base (display) que tendrá punteros a direcciones de la tercer región, la pila, donde almacenará los datos que serán utilizados por las operaciones. 
+La memoria de MEPa se divide en tres secciones: la región del programa, donde almacenará el código del programa; un vector de direcciones base que tendrá punteros a direcciones de la tercer región, la pila, donde almacenará los datos que serán utilizados por las operaciones. 
 
 El uso de una pila nos permite implementar fácilmente la evaluación de expresiones, ya que la precedencia de operadores queda implícita por el recorrido del árbol de derivación que surge de nuestra sintaxis. Además, la implementación de las llamadas recursivas también se beneficia al utilizar una estructura de pila para almacenar los valores y las direcciones de retorno.
 
@@ -100,7 +98,7 @@ Cada regla que esté asociada a la generación de instrucciones de la tabla \ref
 	\item Si es una función definida por el usuario, agrega \texttt{LLPR LX} que indica la llamada a la función que fue etiquetado con el label \texttt{X} y además agrega \texttt{RMEM 1} para reservar una posición de memoria extra para guardar el valor de retorno de la función.
 \end{itemize}
 \item $<$conditional-statement$>$ agrega \texttt{DSVF LX$_{1}$} que permite saltar el código hasta la instrucción etiquetada con \texttt{X$_{1}$} si el tope de la pila es falso, es decir no ejecuta el cuerpo del $then$ en caso de ser falsa la condición de $if$.
-\item $<$else-statement$>$ agrega \texttt{DSVS LX$_{2}$} para desviar el cuerpo del $else$ en caso de que el contenido del $then$ se haya ejecutado. Luego del desvió agrega \texttt{LX$_{1}$ NADA} que será donde se desviará en caso de que el $then$ sea falso, y permitirá la ejecución del $else$, ya que este no será desviado. Finalmente agrega \texttt{LX$_{2}$ NADA} que será donde se desviará el $else$ en caso de no cumplirse. Si no se detecto la sentencia $else$ por el analizador sintáctico solo se agrega \texttt{LX$_{1}$ NADA} que corresponde a donde se desviará el $then$ en caso de ser falso.
+\item $<$else-statement$>$ agrega \texttt{DSVS LX$_{2}$} para desviar el cuerpo del $else$ en caso de que el contenido del $then$ se haya ejecutado. Luego del desvió agrega \texttt{LX$_{1}$ NADA} que será donde se desviará en caso de que el $then$ sea falso, y permitirá la ejecución del $else$, ya que este no será desviado. Finalmente agrega \texttt{LX$_{2}$ NADA} que será donde se desviará el $else$ en caso de no cumplirse. Si no se detectó la sentencia $else$ por el analizador sintáctico solo se agrega \texttt{LX$_{1}$ NADA} que corresponde a donde se desviará el $then$ en caso de ser falso.
 %agrega las instrucciones para desviar el flujo de ejecución y no ejecutar el cuerpo del ``else'' si ya ejecutó el ``then''.
 \item $<$repetitive-statement$>$ agrega \texttt{LX$_{1}$ NADA} que será la instrucción etiquetada donde se desviará el flujo en caso de que la condición de repetición se cumpla. Luego agrega \texttt{DSVF LX$_{2}$} y \texttt{DSVS LX$_{1}$} indicando que se desviará a la instrucción etiquetada \texttt{X$_{2}$} en caso de no cumplirse la condición del $while$ o se desviará a \texttt{X$_{1}$} en caso de cumplirse. Finalmente se agrega \texttt{LX$_{2}$ NADA} que es la instrucción a la que se desviará el flujo en caso de que no se cumpla la condición de repetición.
 %agrega las instrucciones para repetir el cuerpo del ``while'' mientras se cumpla la condición.
@@ -127,7 +125,7 @@ Cada regla que esté asociada a la generación de instrucciones de la tabla \ref
 \subsection{Descripción del problema}
 En esta implementación debemos generar el código intermedio según las sentencias del archivo de entrada en lenguaje Pascal. 
 
-En esta etapa no existen errores de generación de código, ya que simplemente es devolver una secuencia de instrucciones, por lo que los únicos errores que lanzará el compilador son los de las etapas previas de análisis del código fuente. Si existe un error en alguna de las etapas de análisis, no se geenerará ningún archivo de salida con código MEPa.
+En esta etapa no existen errores de generación de código, ya que simplemente es devolver una secuencia de instrucciones, por lo que los únicos errores que lanzará el compilador son los de las etapas previas de análisis del código fuente. Si existe un error en alguna de las etapas de análisis, no se generará ningún archivo de salida con código MEPa.
 
 La implementación se basará en agregar las sentencias necesarias para crear el archivo de salida con el código MEPa. Estas sentencias estarán embebidas en el analizador semántico.
 
@@ -158,7 +156,7 @@ Para no perder la implementación del Analizador Semántico, crearemos otra clas
 \label{fig:arbol_dir_5}
 \end{figure}
 
-La tabla de símbolos requirió agregar información tanto para poder representar el alcance estático, como para identificar qué identificadores dentro de un ambiente son variables y cuáles son parámetros, para poder calcular el correcto acceso de los valores de la pila. A continuación se puedne ver las modificaciones sobre el TDA Ambiente, donde se aprecia la información necesaria descrita en \ref{sec:gen_cod:mod_tab_sim}.
+La tabla de símbolos requirió agregar información tanto para poder representar el alcance estático, como para identificar qué identificadores dentro de un ambiente son variables y cuáles son parámetros, para poder calcular el correcto acceso de los valores de la pila. A continuación se pueden ver las modificaciones sobre el TDA Ambiente, donde se aprecia la información necesaria descrita en \ref{sec:gen_cod:mod_tab_sim}.
 
 \begin{minted}[escapeinside=~~,autogobble,linenos,xleftmargin=0.025\textwidth,xrightmargin=0.025\textwidth,breaklines]{java}
 public class Ambiente {
@@ -517,3 +515,5 @@ Pudimos generar el código intermedio MEPa cumpliendo todas las características
 
 Como consecuencia de trabajar sobre el mismo código que el Analizador Semántico, el programa creció y se dificulta su lectura.
 
+\chapter{Conclusiones}
+%las conclusiones de las conclusiones
