@@ -1,7 +1,7 @@
 \chapter{Generación de código intermedio}
 
 \section{Introducción}
-En este capítulo desarrollaremos la especificación y la implementación de la generación de código intermedio, utilizando código de tres direcciones, y generando un código ejecutable por una máquina virtual.
+En este capítulo desarrollaremos la especificación y la implementación del Generador de Código Intermedio, utilizando código de tres direcciones, y generando un código ejecutable por una máquina virtual.
 
 \section{Descripción del problema}
 \label{sec:gen_cod:descr_prob}
@@ -20,7 +20,7 @@ El uso de una pila nos permite implementar fácilmente la evaluación de expresi
 
 En la tabla \ref{tab:instr_mepa} se ven las instrucciones que utilizamos y su funcionalidad.
 
-\begin{table}[]
+\begin{table}
     \centering
     \begin{tabular}{|c|c|c|}
 \hline
@@ -64,9 +64,7 @@ Almacenar & ALVL m,n & \begin{tabular}[c]{@{}c@{}}almacena el tope de \\ la pila
 \end{table}
 
 \section{Estrategias}
-Para facilitar el trabajo con los saltos condicionales de MEPa, almacenamos los \emph{labels} de cada ambiente en la tabla de símbolos.
-
-Como no tuvimos que preocuparnos por el tamaño de los tipos de datos, para calcular los offsets de las variables utilizamos su posición en el orden de declaración, y se guardó esta posición para cada variable en la tabla de símbolos. Para calcular la memoria a reservar, contamos la cantidad de variables que había en el ambiente.
+Para facilitar el trabajo con los saltos condicionales de MEPa, almacenamos los \emph{labels} de cada ambiente en la tabla de símbolos. Por otro lado, como no tuvimos que preocuparnos por el tamaño de los tipos de datos, para calcular los offsets de las variables utilizamos su posición en el orden de declaración, y se guardó esta posición para cada variable en la tabla de símbolos. Para calcular la memoria a reservar, contamos la cantidad de variables que había en el ambiente.
 
 \section{Limitaciones}
 Algunas operaciones de MEPa no fueron utilizadas, como salidas por pantalla o lecturas de teclado que generen saltos de línea automáticos; aunque sean más una comodidad para el programador que una limitación. 
@@ -74,7 +72,7 @@ Algunas operaciones de MEPa no fueron utilizadas, como salidas por pantalla o le
 \section{Diseño del generador de código intermedio}
 Para especificar cómo se llevará a cabo la generación de código intermedio, se describirán las modificaciones necesarias sobre las reglas de la gramática.
 
-Para cumplir los objetivos de \ref{sec:gen_cod:descr_prob}, se utilizará una variable a la cuál se le agregará el código MEPa que se genere durante la compilación. Una vez concluida la compilación el contenido de la variable se escribirá en un archivo.
+Para cumplir los objetivos de \ref{sec:gen_cod:descr_prob}, se utilizará una variable a la cual se le agregará el código MEPa que se genere durante la compilación. Una vez concluida la compilación el contenido de la variable se escribirá en un archivo.
 
 \subsection{Modificaciones a la tabla de símbolos}
 \label{sec:gen_cod:mod_tab_sim}
@@ -87,7 +85,7 @@ Cada regla que esté asociada a la generación de instrucciones de la tabla \ref
 \item $<$program$>$ agrega \texttt{INPP} antes de llamar a $<$program-heading$>$  y luego de unificar con el ``.'' final agrega \texttt{PARA}. Esto indica el comienzo y fin del programa principal.
 \item En $<$block$>$, luego de llamar $<$declaration-block$>$ y $<$multiple-statement$>$ agrega \texttt{LMEM X}. Esto libera la memoria asignada a las variables, donde \texttt{X} es la cantidad de variables que se reservaron en $<$declaration-block$>$.
 \item $<$declaration-block$>$ agrega \texttt{RMEM X} luego de $<$variable-declaration-block$>$, reservando  \texttt{X} posiciones de memoria para las variables locales.
-\item $<$procedure-declaration$>$ y $<$function-declaration$>$, agrega \texttt{DSVS LX$_{1}$} la cuál es una instrucción de salto, y donde \texttt{X$_{1}$} es un label que corresponde con el final del subprograma. Luego agrega \texttt{LX$_{2}$ ENPR P} que indica el comienzo del subprograma, y donde \texttt{X$_{2}$} es un label que se utilizará para llamar al subprograma posteriormente y \texttt{P} es la profundidad del ambiente actual. Finalmente se agrega \texttt{RTPR P X$_{3}$} y \texttt{LX$_{1}$ NADA}, para indicar el retorno del subprograma, donde \texttt{P} es la misma profundidad mencionada anteriormente, \texttt{X$_{3}$} es la cantidad de parámetros recibidos por el subprograma, y por último \texttt{X$_{1}$} es el label definido para el final del subprograma y donde se desviará la primera vez, durante la definición.
+\item $<$procedure-declaration$>$ y $<$function-declaration$>$, agrega \texttt{DSVS LX$_{1}$} la cual es una instrucción de salto, y donde \texttt{X$_{1}$} es un label que corresponde con el final del subprograma. Luego agrega \texttt{LX$_{2}$ ENPR P} que indica el comienzo del subprograma, y donde \texttt{X$_{2}$} es un label que se utilizará para llamar al subprograma posteriormente y \texttt{P} es la profundidad del ambiente actual. Finalmente se agrega \texttt{RTPR P X$_{3}$} y \texttt{LX$_{1}$ NADA}, para indicar el retorno del subprograma, donde \texttt{P} es la misma profundidad mencionada anteriormente, \texttt{X$_{3}$} es la cantidad de parámetros recibidos por el subprograma, y por último \texttt{X$_{1}$} es el label definido para el final del subprograma y donde se desviará la primera vez, durante la definición.
 %crean las etiquetas correspondientes para marcar el comienzo y fin del procedimiento/función, para saltar el cuerpo del procedimiento/función, y para retornar el control a quien lo invocó.
 \item $<$assignment-statement$>$ agrega \texttt{ALVL P O} que permite almacenar el valor del tope de la pila en una variable indicada mediante la profundidad \texttt{P} y el offset \texttt{O}.
 \item  $<$call-procedure-or-function$>$ agrega varias instrucciones diferentes dependiendo del tipo de subprograma llamado:
@@ -98,7 +96,7 @@ Cada regla que esté asociada a la generación de instrucciones de la tabla \ref
 	\item Si es una función definida por el usuario, agrega \texttt{LLPR LX} que indica la llamada a la función que fue etiquetado con el label \texttt{X} y además agrega \texttt{RMEM 1} para reservar una posición de memoria extra para guardar el valor de retorno de la función.
 \end{itemize}
 \item $<$conditional-statement$>$ agrega \texttt{DSVF LX$_{1}$} que permite saltar el código hasta la instrucción etiquetada con \texttt{X$_{1}$} si el tope de la pila es falso, es decir no ejecuta el cuerpo del $then$ en caso de ser falsa la condición de $if$.
-\item $<$else-statement$>$ agrega \texttt{DSVS LX$_{2}$} para desviar el cuerpo del $else$ en caso de que el contenido del $then$ se haya ejecutado. Luego del desvió agrega \texttt{LX$_{1}$ NADA} que será donde se desviará en caso de que el $then$ sea falso, y permitirá la ejecución del $else$, ya que este no será desviado. Finalmente agrega \texttt{LX$_{2}$ NADA} que será donde se desviará el $else$ en caso de no cumplirse. Si no se detectó la sentencia $else$ por el analizador sintáctico solo se agrega \texttt{LX$_{1}$ NADA} que corresponde a donde se desviará el $then$ en caso de ser falso.
+\item $<$else-statement$>$ agrega \texttt{DSVS LX$_{2}$} para desviar el cuerpo del $else$ en caso de que el contenido del $then$ se haya ejecutado. Luego del desvío agrega \texttt{LX$_{1}$ NADA} que será donde se desviará en caso de que el $then$ sea falso, y permitirá la ejecución del $else$, ya que este no será desviado. Finalmente agrega \texttt{LX$_{2}$ NADA} que será donde se desviará el $else$ en caso de no cumplirse. Si no se detectó la sentencia $else$ por el analizador sintáctico solo se agrega \texttt{LX$_{1}$ NADA} que corresponde a donde se desviará el $then$ en caso de ser falso.
 %agrega las instrucciones para desviar el flujo de ejecución y no ejecutar el cuerpo del ``else'' si ya ejecutó el ``then''.
 \item $<$repetitive-statement$>$ agrega \texttt{LX$_{1}$ NADA} que será la instrucción etiquetada donde se desviará el flujo en caso de que la condición de repetición se cumpla. Luego agrega \texttt{DSVF LX$_{2}$} y \texttt{DSVS LX$_{1}$} indicando que se desviará a la instrucción etiquetada \texttt{X$_{2}$} en caso de no cumplirse la condición del $while$ o se desviará a \texttt{X$_{1}$} en caso de cumplirse. Finalmente se agrega \texttt{LX$_{2}$ NADA} que es la instrucción a la que se desviará el flujo en caso de que no se cumpla la condición de repetición.
 %agrega las instrucciones para repetir el cuerpo del ``while'' mientras se cumpla la condición.
@@ -514,6 +512,3 @@ Puede realizarse una optimización de las instrucciones generadas, sobre todo si
 Pudimos generar el código intermedio MEPa cumpliendo todas las características propuestas. El conjunto de instrucciones resultante no está optimizado, por lo que pueden haber instrucciones innecesarias que reduzcan la eficiencia del programa.
 
 Como consecuencia de trabajar sobre el mismo código que el Analizador Semántico, el programa creció y se dificulta su lectura.
-
-\chapter{Conclusiones}
-%las conclusiones de las conclusiones

@@ -42,30 +42,30 @@ Hemos utilizado la siguiente convención para la definición de la gramática:
 \label{estrategias}
 Para definir la gramática hemos tenido en cuenta la propia definición dada para Pascal (que puede encontrarse en la web) y se la ha limitado en varios sentidos expresados en la sección \ref{limitaciones}, como también se ha optimizado para el caso de no terminales inútiles o repetidos, siempre buscando generar una gramática válida.
 
-Por otro lado, como se ha decidido implementarla en \textbf{BNF} sin extender [\ref{metalenguaje}], la gramática quedó expresada utilizando recursividad, lo cual en etapas siguientes permitirá una traducción a código mas directa.
+Por otro lado, como se ha decidido implementarla en \textbf{BNF} sin extender [\ref{metalenguaje}], la gramática quedó expresada utilizando recursividad, lo cual en etapas siguientes permitirá una traducción a código más directa.
 
 Se ha decidido realizar la gramática considerando optimizar el uso de los no terminales, en vez de tener en cuenta una posible expansión a futuro, es decir, que nuestra definición no será fácilmente adaptable al cambio pero tendrá un mejor rendimiento en el momento de implementarse.
 
 \section{Limitaciones}
 \label{limitaciones}
-Como se ha mencionado en la sección \ref{desc_problema}, se realizará un compilador para el lenguaje Pascal limitado en varios aspectos. En un principio solo se tendrán en cuenta variables del tipo \textbf{integer} y \textbf{boolean}. Los procedimientos y funciones no podrán recibir parámetros por referencia, solo por valor. Dentro de las sentencias alternativas solo encontraremos \textbf{if then else} y en repetitivas solo la sentencia \textbf{while}. No se tendrá en cuenta parámetros enviados al programa principal. Y finalmente las sentencias de escritura y lectura se verán limitadas a un solo valor, y para la salida se tendrán en cuenta algunas consideraciones [\ref{sec:cons_salida}].
+Como se ha mencionado en la sección \ref{desc_problema}, se realizará un compilador para el lenguaje Pascal limitado en varios aspectos. En un principio solo se tendrán en cuenta variables del tipo \textbf{integer} y \textbf{boolean}. Los procedimientos y funciones no podrán recibir parámetros por referencia, solo por valor. Dentro de las sentencias alternativas solo encontraremos \textbf{if then else} y en repetitivas solo la sentencia \textbf{while}. No se tendrá en cuenta parámetros enviados al programa principal. %Y finalmente las sentencias de escritura y lectura se verán limitadas a un solo valor, y para la salida se tendrán en cuenta algunas consideraciones [\ref{sec:cons_salida}].
 
-Con respecto a la especificación, debido a que hemos decidido utilizar {\bf BNF} sin extender, este se ve limitado en expresividad, ya que no utilizamos símbolos para  repetitivas, opcionales, agrupaciones, etc. A pesar de esto, creemos que la especificación es clara dado que el lenguaje trabajado no es de gran magnitud.
+Con respecto a la especificación, debido a que hemos decidido utilizar {\bf BNF} sin extender, éste se ve limitado en expresividad, ya que no utilizamos símbolos para  repetitivas, opcionales, agrupaciones, etc. A pesar de esto, creemos que la especificación es clara dado que el lenguaje trabajado no es de gran magnitud.
 
-\subsection{Consideraciones para la salida}
-\label{sec:cons_salida}
-La instrucción de salida write permite especificar el formato de salida de una variable. El formato depende del tipo de variable que se pase por parámetro. En nuestro caso tenemos solo dos tipos de variables, integer y boolean. Para imprimir estos dos tipos de dato hay que tener en cuenta las siguientes características:
+% \subsection{Consideraciones para la salida}
+% \label{sec:cons_salida}
+% La instrucción de salida write permite especificar el formato de salida de una variable. El formato depende del tipo de variable que se pase por parámetro. En nuestro caso tenemos solo dos tipos de variables, integer y boolean. Para imprimir estos dos tipos de dato hay que tener en cuenta las siguientes características:
 
-\begin{itemize}
-\item{Integer}\\
-write(number : fieldwidth);\\
-Se reservará un campo de ancho ``fieldwidth'' y ``number'' se justificará a la derecha en este campo, con los lugares restantes a la izquierda llenos de espacios en blanco. Si ``fieldwidth'' no es lo suficientemente grande como para cubrir todos los dígitos de ``number'', se mostrará correctamente en un campo más amplio. ``fieldwidth'' también puede ser una variable o expresión de tipo entero.
-\item{Boolean}\\
-write(flag : fieldwidth);\\
-Esto generará ``verdadero'' o ``falso'' dentro del ancho de campo especificado, si se especifica.
-\end{itemize}
+% \begin{itemize}
+% \item{Integer}\\
+% write(number : fieldwidth);\\
+% Se reservará un campo de ancho ``fieldwidth'' y ``number'' se justificará a la derecha en este campo, con los lugares restantes a la izquierda llenos de espacios en blanco. Si ``fieldwidth'' no es lo suficientemente grande como para cubrir todos los dígitos de ``number'', se mostrará correctamente en un campo más amplio. ``fieldwidth'' también puede ser una variable o expresión de tipo entero.
+% \item{Boolean}\\
+% write(flag : fieldwidth);\\
+% Esto generará ``verdadero'' o ``falso'' dentro del ancho de campo especificado, si se especifica.
+% \end{itemize}
 
-El parámetro ``fieldwidth'' es opcional. Para facilitar la implementación no vamos a tener en cuenta esta característica del lenguaje.
+% El parámetro ``fieldwidth'' es opcional. Para facilitar la implementación no vamos a tener en cuenta esta característica del lenguaje.
 
 \section{Definición de la gramática}
 \label{sec:definicion_gramatica}

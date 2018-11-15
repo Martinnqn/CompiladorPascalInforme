@@ -361,12 +361,12 @@ El único inconveniente es que no es posible eliminar la ambigüedad, ya que est
 
 \section{Estrategias}
 %esto no se si ponerlo aca, en la conclusion, o no ponerlo. ESTA BIEN ACA xd
-Al tener que realizar muchos cambios sobre la gramática, era probable cometer errores, por lo que primero decidimos cambiar los nombres de algunos no terminales para que sean mas expresivos, y luego aplicamos la factorización a izquierda y después la eliminación de la recursión a izquierda. Estos dos algoritmos podrían haberse realizado en el orden inverso, pero ejecutados en el orden que propusimos nos aseguramos que luego de eliminar la recursividad no se generaran construcciones que no estén factorizadas a izquierda. 
+Al tener que realizar muchos cambios sobre la gramática, era probable cometer errores, por lo que primero decidimos cambiar los nombres de algunos no terminales para que sean más expresivos, y luego aplicamos la factorización a izquierda y después la eliminación de la recursión a izquierda. Estos dos algoritmos podrían haberse realizado en el orden inverso, pero ejecutados en el orden que propusimos nos aseguramos que luego de eliminar la recursividad no se generaran construcciones que no estén factorizadas a izquierda. 
 
 En cuanto a la ambigüedad del lenguaje, como dijimos en \ref{sec:ambiguedad_lenguaje}, tomamos como criterio hacer corresponder el \texttt{else} con el \texttt{if} más interno. 
 
 \section{Limitaciones}
-%mas chamuyo por aca JOYA 
+%más chamuyo por aca JOYA 
 La única limitación encontrada fue la expresividad del lenguaje, que hace que algunas construcciones sean ambiguas. Sin embargo no presenta un gran problema, ya que tomamos decisiones que permiten construir el analizador sintáctico descendente. En la siguiente sección mostraremos cómo esta limitación puede ser mitigada.
 %fin del chamuyo
 
@@ -623,9 +623,9 @@ En la figura \ref{fig:sintactico_ej_correcto} vemos un programa en Pascal que es
 
 Por otro lado en la figura \ref{fig:sintactico_ej_error_1} encontramos que la palabra reservada \texttt{Program} que indica el comienzo del programa está mal escrita (\texttt{Programa}) por lo que el analizar devolverá un error específico, como se muestra en la salida en la figura \ref{fig:sintactico_ej_error_1_salida}, donde indica que se esperaba un \texttt{TK\_PROGRAM}. , es decir que se esperaba la palabra \texttt{Program}, según corresponde en la definición del procedimiento, donde realiza una llamada a \texttt{match} con el token \texttt{TK\_PROGRAM} como parámetro.
 
-También podemos ver en la figura \ref{fig:sintactico_ej_error_2} otro tipo de error mas general, donde luego de realizar la definición de la variable \texttt{Result} se le quiere asignar un tipo de dato \texttt{Bool}, el cual no es un tipo existente (el correcto sería \texttt{Boolean}). En este sentido, el procedimiento que evalúa la sintaxis de las definiciones de variables, no puede saber que token específico debería matchearse en tal lugar, pero en cambio sabe que corresponde a un ``tipo de dato'' debido a que el error aparecerá en la llamada al no terminal \texttt{type} el cuál devolverá como parámetro de error que se esperaba un tipo de dato, que en este caso corresponden a \texttt{Integer} o \texttt{Boolean}.
+También podemos ver en la figura \ref{fig:sintactico_ej_error_2} otro tipo de error más general, donde luego de realizar la definición de la variable \texttt{Result} se le quiere asignar un tipo de dato \texttt{Bool}, el cual no es un tipo existente (el correcto sería \texttt{Boolean}). En este sentido, el procedimiento que evalúa la sintaxis de las definiciones de variables, no puede saber que token específico debería matchearse en tal lugar, pero en cambio sabe que corresponde a un ``tipo de dato'' debido a que el error aparecerá en la llamada al no terminal \texttt{type} el cuál devolverá como parámetro de error que se esperaba un tipo de dato, que en este caso corresponden a \texttt{Integer} o \texttt{Boolean}.
 
-Por último encontramos un tipo de error mas general que los anteriores, como se ve en la figura \ref{fig:sintactico_ej_error_3} donde no se especificó que token o elemento sintáctico (como un tipo de dato del caso anterior) se esperaba, y por lo tanto no presenta ningún mensaje adicional de lo que ``se esperaba'' en la cadena sintáctica donde surgió el error, como puede verse en la figura \ref{fig:sintactico_ej_error_3_salida} de la salida. Estos errores son detectados y es posible determinar a que elemento sintáctico corresponden, pero aún no se han trabajado en su totalidad en esta primera implementación, por lo que quedan pendientes para futuras implementaciones.
+Por último encontramos un tipo de error más general que los anteriores, como se ve en la figura \ref{fig:sintactico_ej_error_3} donde no se especificó que token o elemento sintáctico (como un tipo de dato del caso anterior) se esperaba, y por lo tanto no presenta ningún mensaje adicional de lo que ``se esperaba'' en la cadena sintáctica donde surgió el error, como puede verse en la figura \ref{fig:sintactico_ej_error_3_salida} de la salida. Estos errores son detectados y es posible determinar a que elemento sintáctico corresponden, pero aún no se han trabajado en su totalidad en esta primera implementación, por lo que quedan pendientes para futuras implementaciones.
 
 \begin{figure}[H]
 \begin{minted}[autogobble,linenos,xleftmargin=0.35\textwidth,xrightmargin=0.35\textwidth]{pascal}
@@ -724,8 +724,4 @@ Como mejora, en el caso de los mensajes de errores que se muestran en la compila
 También deberían indicarse los mensajes de error para los casos faltantes donde ``se esperaría'' un elemento sintáctico general y no un token específico.
 
 \section{Conclusiones}
-Pudimos realizar algunas modificaciones propuestas para la gramática, eliminando su recursividad a izquierda y factorizando a izquierda, pero no pudimos cumplir el requisito de que no sea ambigua, ya que el lenguaje subyacente no lo permitía. 
-
-Más allá de no alcanzar la clase de gramáticas LL(1), el diseño y la implementación del analizador sintáctico descendente predictivo recursivo sin backtracking se pudieron concluir con éxito, tomando las decisiones pertinentes. 
-
-Como resultado de las modificaciones sobre la gramática, ahora es más extensa y se dificulta su legibilidad y comprensión.
+Pudimos realizar algunas modificaciones propuestas para la gramática, eliminando su recursividad a izquierda y factorizando a izquierda, pero no pudimos cumplir el requisito de que no sea ambigua, ya que el lenguaje subyacente no lo permitía. Más allá de no alcanzar la clase de gramáticas LL(1), el diseño y la implementación del analizador sintáctico descendente predictivo recursivo sin backtracking se pudieron concluir con éxito, tomando las decisiones pertinentes. Finalmente, como resultado de las modificaciones sobre la gramática, ahora es más extensa y se dificulta su legibilidad y comprensión.

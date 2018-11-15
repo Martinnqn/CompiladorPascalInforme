@@ -88,9 +88,9 @@
 \chapter{Introducción}
 
 \section{Compiladores y proceso de desarrollo}
-Los compiladores son programas que permiten la traducción entre especificaciones de lenguajes de programación. Tienen el objetivo principal de traducir lenguajes de alto nivel en otros de mas bajo nivel que sean interpretables por la arquitectura del hardware en que se ejecutarán.
+Los compiladores son programas que permiten la traducción entre especificaciones de lenguajes de programación. Tienen el objetivo principal de traducir lenguajes de alto nivel en otros de más bajo nivel que sean interpretables por la arquitectura del hardware en que se ejecutarán.
 
-Para poder lograr esta tarea, los compiladores realizan varias etapas, donde, en un principio, se tiene como entrada el código del lenguaje a traducir el cuál pasará por las etapas que pueden verse en la figura \ref{fig:etapas} y finalmente retornará el código en el lenguaje objetivo.
+Para poder lograr esta tarea, los compiladores realizan varios procesos, donde, en un principio, se tiene como entrada el código del lenguaje a traducir el cual pasará por las etapas que pueden verse en la figura \ref{fig:etapas} y finalmente retornará el código en el lenguaje objetivo.
 
 \begin{figure}[H]
 \centering
@@ -108,15 +108,27 @@ En este sentido, para este informe vamos a mostrar el diseño y la implementaci�
 %\end{adjustwidth*}
 \setcounter{page}{1}
 
-\input{chapter1}
+\input{gramatica}
 
-\input{chapter2}
+\input{lexico}
 
-\input{chapter3}
+\input{sintactico}
 
-\input{chapter4}
+\input{semantico}
 
-\input{chapter5}
+\input{generacion_codigo}
+
+\chapter{Conclusiones}
+%las conclusiones de las conclusiones
+
+\section{Trabajo realizado}
+En este trabajo concluimos con el diseño y la implementación de un compilador para un subconjunto del lenguaje Pascal. Se han atravesado varias etapas desde el diseño inicial de la gramática que reconoce el lenguaje de Pascal reducido, seguido de los analizadores léxico, sintáctico y semántico, y finalmente concluyendo con el generador de código intermedio para utilizar sobre la máquina virtual MEPa.
+
+En cada etapa tomamos las decisiones adecuadas para abordar los problemas que se presentaron. Como el tratamiento a la ambigüedad del lenguaje en el análisis sintáctico, las estructuras elegidas e implementadas para representar la tabla de símbolos en el análisis semántico y finalmente aprovechar las llamadas recursivas propias de la implementación sintáctica, dada por la precedencia de los operadores, para la generación de código intermedio, como también el uso de la tabla de símbolos definida previamente.
+
+\section{Mejoras y futuros trabajos}
+Como mejoras aún quedan chequeos semánticos por realizar, como verificar que las variables estén inicializadas antes de utilizarlas en operaciones. Además, queda pendiente la optimización de código intermedio antes de enviarlo a la máquina virtual. Por otro lado tampoco se realizó la generación de código objeto, ya que fue delegada a la máquina virtual MEPa.
 
 \input{apendix.tex}
+
 \end{document}

@@ -5,7 +5,7 @@ En este capítulo utilizaremos la gramática desarrollada en el capítulo anteri
 Para ello, se indicarán como están formados los \emph{tokens}, que son elementos que utilizará el analizador sintáctico posteriormente, y se mostrará el diseño de un autómata que permita el reconocimiento de tales tokens en un recorrido [\ref{sec:lexico_reconocedor}].
 
 \section{Descripción del problema}
-Para esta etapa requerimos especificar en un principio el alfabeto que tendrá nuestra cadena de entrada, luego debemos definir que combinación de símbolos corresponderán a lexemas de nuestro lenguaje y partir de estos debemos generar patrones que identifiquen para cada token que lexemas les corresponden [\ref{sec:lexico_definicion}].
+Para esta etapa requerimos especificar en un principio el alfabeto que tendrá nuestra cadena de entrada, luego debemos definir que combinación de símbolos corresponderán a lexemas de nuestro lenguaje y partir de éstos debemos generar patrones que identifiquen para cada token que lexemas les corresponden [\ref{sec:lexico_definicion}].
 
 Dados los tokens y sus patrones representativos, se especifica un autómata finito determinístico que lee cada símbolo de la cadena de entrada y permite determinar si es un token válido del lenguaje. Para ello el autómata se realiza mediante la unión de autómatas más simples para reconocer los patrones de cada token por separado.
 
@@ -17,7 +17,7 @@ $$ \Sigma = \{ \bm{A}, ..., \bm{Z}, \bm{a}, ..., \bm{z}, \bm{0}, ..., \bm{9}, \b
 
 Con estos símbolos podemos definir los lexemas que componen el subconjunto de lenguaje Pascal que se desarrolla y luego definir expresiones regulares para poder identificar a que token corresponden.
 
-En la tabla \ref{tab:tabla_token} podemos visualizar los token que se indentifican en el lenguaje especificado junto con los patrones que definen los lexemas que se corresponden con cada uno de estos token. Tales patrones se especificarán mediante expresiones regulares.
+En la tabla \ref{tab:tabla_token} podemos visualizar los tokens que se identifican en el lenguaje especificado junto con los patrones que definen los lexemas que se corresponden con cada uno de estos tokens. Tales patrones se especificarán mediante expresiones regulares.
 
 \begin{table}[H]
 \centering
@@ -70,13 +70,13 @@ tk\_comma     & ,                                                    & ,        
 \end{table}
 
 \section{Estrategias}
-Utilizamos diferentes tokens para cada uno de los operadores, como en los operadores de comparación, de multiplicación, y de suma. Así aunque se manejen mas cantidad de tokens que si estuvieren agrupados, es mas sencillo diferenciarlos en las etapas posteriores.
+Utilizamos diferentes tokens para cada uno de los operadores, como en los operadores de comparación, de multiplicación, y de suma. Así aunque se manejen más cantidad de tokens que si estuvieren agrupados, es más sencillo diferenciarlos en las etapas posteriores.
 
-Para componer el reconocedor, tomaremos cualquier cadena de entrada que pueda ser una palabra clave, con el patrón del token id. Si es una palabra clave, se crea su token correspondiente, si no lo es, entonces se confirma que es un id. De esta manera se simplifica el autómata reconocedor de tokens.
+Para componer el reconocedor, tomaremos cualquier cadena de entrada que pueda ser una palabra clave, con el patrón del token tk\_id. Si es una palabra clave, se crea su token correspondiente, si no lo es, entonces se confirma que es un identificador. De esta manera se simplifica el autómata reconocedor de tokens.
 
 \section{Limitaciones}
 \label{sec:lexico_limitaciones}
-En la especificación de tokens se ha indicado para cada operador un token diferente, como con los operadores relacionales (rel\_op), esto permite diferenciarlos y en futuras etapas facilita la implementación. En cambio se pudo optar por una visión mas genérica que facilite la visualización de los diferentes token conceptualmente, de manera que queden agrupados y se diferencien por un atributo que indique específicamente que lexema representa.
+En la especificación de tokens se ha indicado para cada operador un token diferente, como con los operadores relacionales (rel\_op), esto permite diferenciarlos y en futuras etapas facilita la implementación. En cambio se pudo optar por una visión más genérica que facilite la visualización de los diferentes token conceptualmente, de manera que queden agrupados y se diferencien por un atributo que indique específicamente que lexema representa.
 
 Por otro lado, con respecto al diseño del autómata, se consideró, para simplificar el diseño, que las palabras reservadas no serán reconocidas por estados independientes si no que serán un caso específico del patrón para reconocer identificadores (tk\_id).
 
@@ -448,13 +448,9 @@ End.
 \end{figure}
 
 \section{Conclusiones}
-%Realizamos una especificación del autómata de una manera simplificada de manera que sea mas visible su funcionamiento [\ref{sec:lexico_reconocedor}] y a futuro se dará mas detalle a la hora de implementar. De la misma manera para la definición de los token en la tabla \ref{tab:tabla_token} se consideró cada token de una manera mas conceptual y por ello no se especificó uno separado para cada lexema, como se menciona en \ref{sec:lexico_limitaciones}. En este sentido la especificación dada en este capítulo tiene una visión mas general del funcionamiento de un analizador léxico y no tan allegada a la implementación.
-En este capítulo pudimos concluir la especificación e implementación del análisis léxico.
+%Realizamos una especificación del autómata de una manera simplificada de manera que sea más visible su funcionamiento [\ref{sec:lexico_reconocedor}] y a futuro se dará más detalle a la hora de implementar. De la misma manera para la definición de los token en la tabla \ref{tab:tabla_token} se consideró cada token de una manera más conceptual y por ello no se especificó uno separado para cada lexema, como se menciona en \ref{sec:lexico_limitaciones}. En este sentido la especificación dada en este capítulo tiene una visión más general del funcionamiento de un analizador léxico y no tan allegada a la implementación.
+En este capítulo pudimos concluir la especificación e implementación del análisis léxico. Realizamos una definición de los tokens en la tabla \ref{tab:tabla_token}, considerando cada token conceptualmente como se menciona en \ref{sec:lexico_limitaciones} y así evitamos una definición exhaustiva y simplificamos la tabla. 
 
-Realizamos una definición de los token en la tabla \ref{tab:tabla_token}, considerando cada token conceptualmente como se menciona en \ref{sec:lexico_limitaciones} y así evitamos una definición exhaustiva y simplificamos la tabla.
-
-En base a la tabla de tokens, diseñamos el autómata reconocedor de tokens [\ref{sec:lexico_reconocedor}] describiendo su funcionamiento.
-
-Luego, en la sección \ref{sec:implementacion_lexico}, tuvimos en cuenta las especificaciones y desarrollamos un programa en Java que permite reconocer los tokens de nuestro lenguaje.
+En base a la tabla de tokens, diseñamos el autómata reconocedor de tokens [\ref{sec:lexico_reconocedor}] describiendo su funcionamiento. Luego, en la sección \ref{sec:implementacion_lexico}, tuvimos en cuenta las especificaciones y desarrollamos un programa en Java que permite reconocer los tokens de nuestro lenguaje.
 
 En los siguientes capítulos continuaremos desarrollando las especificaciones e implementaciones de las siguientes etapas de un compilador.

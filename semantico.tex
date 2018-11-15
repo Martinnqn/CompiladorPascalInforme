@@ -36,7 +36,7 @@ not                                                     & Boolean         & -   
 \end{table}
 
 \section{Estrategias}
-Se utilizaron estructuras de objetos para la representación de la tabla de símbolos de manera que esta fuera fácilmente accedida por el Analizador Semántico. En tal estructura se dispusieron atributos de manera que se pueda identificar el nombre del programa, función o procedimiento que corresponde al ambiente nuevo, como también listas para los tipos de los identificadores reconocidos en su interior, y para los parámetros que recibe, en caso de que corresponda. Esto nos permitió chequear fácilmente el retorno de las funciones y las llamadas recursivas, los cuáles son casos particulares que deben tratarse.
+Se utilizaron estructuras de objetos para la representación de la tabla de símbolos de manera que esta fuera fácilmente accedida por el Analizador Semántico. En tal estructura se dispusieron atributos de manera que se pueda identificar el nombre del programa, función o procedimiento que corresponde al ambiente nuevo, como también listas para los tipos de los identificadores reconocidos en su interior, y para los parámetros que recibe, en caso de que corresponda. Esto nos permitió chequear fácilmente el retorno de las funciones y las llamadas recursivas, los cuales son casos particulares que deben tratarse.
 
 %\section{Limitaciones}
 %La estructura desarrollada para la tabla de símbolos presenta limitaciones con respecto a la expansión de los atributos que esta puede almacenar para cada identificador. Esto es debido a que se plantearon como listas de atributos solo aquellas características que se deseaban almacenar para los chequeos que se proponen en la sección \ref{sec:sem:descr_probl}. Por lo tanto si se desean agregar mas atributos, es necesario agregar nuevas listas en la estructura, donde se mapeen los identificadores a su valor de atributo, como también sus métodos de acceso correspondientes. Por ejemplo para almacenar el valor de los tipos de los identificadores en la tabla de símbolos, se utiliza una lista que mapea de identificadores a tipos, y se deben agregar todas las operaciones correspondientes para acceder a esta lista. En este sentido, el acceso a los datos de la tabla de símbolos no es genérico ya que si quiero acceder a otro dato, como los parámetros de un subprograma, debo utilizar otra operación correspondiente para tal acceso.
@@ -76,7 +76,7 @@ En la Tabla \ref{tab:tabla_simbolos} se esquematiza la forma que tendrá la tabl
 \subsection{Gramática de atributos}
 \label{sec:sem:gram_atrib}
 Algunas reglas de la gramática serán alteradas para insertar y recuperar información de la tabla de símbolos, y permitirán cumplir con los objetivos propuestos en la sección \ref{sec:sem:descr_probl}.
-Los siguientes no terminales se verán modificados, y sus correspondientes implementaciones en el Analizador Sintáctico cambiaran según estas modificaciones:
+Los siguientes no terminales se verán modificados, y sus correspondientes implementaciones en el Analizador Sintáctico cambiarán según estas modificaciones:
 
 \begin{itemize}
 \item $<$bool$>$ sintetiza el atributo \texttt{type} indicando el type boolean.
@@ -100,7 +100,7 @@ Los siguientes no terminales se verán modificados, y sus correspondientes imple
 En esta sección mostraremos las principales modificaciones del analizador sintáctico teniendo en cuenta la gramática \ref{sec:sem:gram_atrib}. 
 
 \subsection{Descripción del problema}
-En esta etapa requerimos implementar el Analizador Semántico. Como es un análisis que debe hacerse en conjunto con el análisis sintáctico, el código del Analizador Semántico será embebido en el Analizador Sintáctico.
+En esta etapa se requiere implementar el Analizador Semántico. Como es un análisis que debe hacerse en conjunto con el análisis sintáctico, el código del Analizador Semántico será embebido en el Analizador Sintáctico.
 
 Cuando se encuentre un error semántico, se lanzará un error que brinde información significativa para poder corregirlo. 
 
